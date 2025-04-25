@@ -36,9 +36,13 @@
 // Example of app usage/steps:
 // 1. User opens the application.
 // 2. User is prompted to enter their name, age, and weight.
-// 3. User is prompted to set fitness goals.
+// 3. User is prompted to set fitness goals. (this will be devloped after everything else)
 // 4. User data is saved on device, and loaded when the app is next opened.
 // 5. User is taken to dashboard where they can log workouts and view progress.
+// 6. User can log workouts by entering type, duration, and calories burned.
+// 7. User can view progress reports based on logged workouts.
+// 8. User can set new goals and track progress.
+// 9. User can view summary reports of their fitness journey.
 
 // Team Members:
 // - Majdi Jaigirdar (Student ID: 26192802) (GitHub: [majdi-jaigirdar](https://github.com/majdiJ))
@@ -46,10 +50,14 @@
 // - Muhammad Fasih (Student ID: 25968823) (GitHub: [fasihmuhammad](...))
 // - Robert Fory (Student ID: 25760416) (GitHub: [robertfory](...))
 
+// Import Libraries
+
+
 public class SmartFitnessTrackerApplication {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		WelcomeScreen welcomeScreen = new WelcomeScreen(800, 600);
+		welcomeScreen.display();
 
 	}
 

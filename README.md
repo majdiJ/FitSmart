@@ -4,8 +4,8 @@ FitSmart is a smart fitness tracker application that allows users to track their
 
 ## Team Members
 - Majdi Jaigirdar (Student ID: 26192802) (GitHub: [majdi-jaigirdar](https://github.com/majdiJ))
-- Jessica Livesley (Student ID: 25658654) (GitHub: [JessicaLivesley](...))
-- Muhammad Fasih (Student ID: 25968823) (GitHub: [fasihmuhammad](...))
-- Robert Fory (Student ID: 25760416) (GitHub: [robertfory](...))
+- Jessica Livesley (Student ID: 25658654) (GitHub: [JessicaLivesley](https://github.com/JessLivesley))
+- Muhammad Fasih (Student ID: 25968823) (GitHub: [fasihmuhammad](https://github.com/FazzyM)) 
+- Robert Fory (Student ID: 25760416) (GitHub: [robertfory](https://github.com/...))
 
 ## Features
