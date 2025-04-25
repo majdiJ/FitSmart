@@ -53,12 +53,7 @@
 // Import Libraries
 
 
+
 public class SmartFitnessTrackerApplication {
-
-	public static void main(String[] args) {
-		WelcomeScreen welcomeScreen = new WelcomeScreen(800, 600);
-		welcomeScreen.display();
-
-	}
 
 }
