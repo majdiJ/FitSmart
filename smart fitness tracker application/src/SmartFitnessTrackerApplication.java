@@ -50,10 +50,19 @@
 // - Muhammad Fasih (Student ID: 25968823) (GitHub: [fasihmuhammad](...))
 // - Robert Fory (Student ID: 25760416) (GitHub: [robertfory](...))
 
-// Import Libraries
-
-
+// Import Librarie
 
 public class SmartFitnessTrackerApplication {
 
+	// Tempory string array holding existing usernames for testing purposes
+	public static String[] existingUsernames = { "user1", "user2", "user3" };
+
+	// Call the console UI
+	public static void main(String[] args) {
+		// Clear the console
+		TempConsoleUI.ClearConsole();
+
+		// Call the first launch screen
+		TempConsoleUI.FirstLaunchScreen();
+	}
 }

@@ -4,16 +4,18 @@ public class FitnessGoal {
 	private int dailyStepCount;
 	private int workoutDuration; // in minutes
 	private int caloriesBurned;
+    private int workoutsPerWeek; // number of workouts per week
 	private double dailyWaterIntake; // in liters
 	private int sleepMinutes; // in minutes
 	private double weightGoal; // in kg
 	private double strength; // in kg
 
     // Constructor
-    public FitnessGoal(int dailyStepCount, int workoutDuration, int caloriesBurned, double dailyWaterIntake, int sleepMinutes, double weightGoal, double strength) {
+    public FitnessGoal(int dailyStepCount, int workoutDuration, int caloriesBurned, int workoutsPerWeek, double dailyWaterIntake, int sleepMinutes, double weightGoal, double strength) {
         this.dailyStepCount = dailyStepCount;
         this.workoutDuration = workoutDuration;
         this.caloriesBurned = caloriesBurned;
+        this.workoutsPerWeek = workoutsPerWeek;
         this.dailyWaterIntake = dailyWaterIntake;
         this.sleepMinutes = sleepMinutes;
         this.weightGoal = weightGoal;
@@ -57,6 +59,19 @@ public class FitnessGoal {
             throw new IllegalArgumentException("Calories burned cannot be negative.");
         } else {
             this.caloriesBurned = caloriesBurned;
+        }
+    }
+
+    public int getWorkoutsPerWeek() {
+        return workoutsPerWeek;
+    }
+    public void setWorkoutsPerWeek(int workoutsPerWeek) {
+        if (workoutsPerWeek == 0) { // No goal set
+            this.workoutsPerWeek = workoutsPerWeek;
+        } else if (workoutsPerWeek < 0) {
+            throw new IllegalArgumentException("Workouts per week cannot be negative.");
+        } else {
+            this.workoutsPerWeek = workoutsPerWeek;
         }
     }
 

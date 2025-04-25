@@ -1,5 +1,5 @@
 // User Class:
-// This class will store user information such as username, pin, name, age (dob), weight(kg), and fitness goals.
+// This class will store user information such as username, pin, name, age (dob), weight(kg), and fitness goals, workouts.
 
 import java.time.LocalDateTime;
 
@@ -8,17 +8,19 @@ public class User {
     private String pin;
     private String name;
     private LocalDateTime dob; // Date of Birth
-    private int weight; // in kg
+    private double weight; // in kg
     private FitnessGoal fitnessGoal;
+    private Workout[] workouts; // Array of workouts
 
     // Constructor
-    public User(String username, String pin, String name, LocalDateTime dob, int weight, FitnessGoal fitnessGoal) {
+    public User(String username, String pin, String name, LocalDateTime dob, double weight, FitnessGoal fitnessGoal, Workout[] workouts) {
         this.username = username;
         this.pin = pin;
         this.name = name;
         this.dob = dob;
         this.weight = weight;
         this.fitnessGoal = fitnessGoal;
+        this.workouts = workouts;
     }
 
     // Getters and Setters
@@ -72,10 +74,10 @@ public class User {
         }
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         if (weight <= 0) {
             throw new IllegalArgumentException("Weight must be a positive number.");
         } else {
@@ -88,5 +90,40 @@ public class User {
     }
     public void setFitnessGoal(FitnessGoal fitnessGoal) {
         this.fitnessGoal = fitnessGoal;
+    }
+
+    public Workout[] getWorkouts() {
+        return workouts;
+    }
+    public void setWorkouts(Workout[] workouts) {
+        this.workouts = workouts;
+    }
+    public void addWorkout(Workout workout) {
+        if (workout == null) {
+            throw new IllegalArgumentException("Workout cannot be null.");
+        }
+        if (workouts == null) {
+            workouts = new Workout[] { workout };
+        } else {
+            Workout[] newWorkouts = new Workout[workouts.length + 1];
+            System.arraycopy(workouts, 0, newWorkouts, 0, workouts.length);
+            newWorkouts[workouts.length] = workout;
+            workouts = newWorkouts;
+        }
+    }
+    public void removeWorkout(Workout workout) {
+        if (workout == null) {
+            throw new IllegalArgumentException("Workout cannot be null.");
+        }
+        if (workouts != null) {
+            Workout[] newWorkouts = new Workout[workouts.length - 1];
+            int index = 0;
+            for (Workout w : workouts) {
+                if (!w.equals(workout)) {
+                    newWorkouts[index++] = w;
+                }
+            }
+            workouts = newWorkouts;
+        }
     }
 }
