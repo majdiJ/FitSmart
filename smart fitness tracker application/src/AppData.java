@@ -11,11 +11,19 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
 public class AppData {
+    private static final String DATA_FOLDER = "AppData/";
+
     class SaveData {
         public static void saveUserList(userList list, String filename) {
-            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
-                out.writeObject(list);
-                System.out.println("Data saved successfully.");
+            try {
+                File folder = new File(DATA_FOLDER);
+                if (!folder.exists()) {
+                    folder.mkdirs(); // Create the folder if it doesn't exist
+                }
+                try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(DATA_FOLDER + filename))) {
+                    out.writeObject(list);
+                    System.out.println("Data saved successfully.");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -24,7 +32,7 @@ public class AppData {
     
     class LoadData {
         public static userList loadUserList(String filename) {
-            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(DATA_FOLDER + filename))) {
                 return (userList) in.readObject();
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -35,7 +43,7 @@ public class AppData {
     
     class CheckDataExists { // Check if the data file exists
         public static boolean checkDataExists(String filename) {
-            File file = new File(filename);
+            File file = new File(DATA_FOLDER + filename);
             return file.exists();
         }
     }
