@@ -1,6 +1,11 @@
 // FitnessGoal Class
 // This class will store fitness goals such as daily step count, workout duration, and calories burned.
-public class FitnessGoal {
+
+import java.io.Serializable;
+
+public class FitnessGoal implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private int dailyStepCount;
 	private int workoutDuration; // in minutes
 	private int caloriesBurned;

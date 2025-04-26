@@ -2,9 +2,13 @@
 // This class will store workout information such as type, duration, and calories burned and time and date of workout.
 // Additionally, it will allow users to add notes to their workouts.
 
+// Import Libraries
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Workout {
+public class Workout implements Serializable {
+	private static final long serialVersionUID = 1L;
+
     private String type; // e.g., running, cycling
     private int duration; // in minutes
     private int caloriesBurned;

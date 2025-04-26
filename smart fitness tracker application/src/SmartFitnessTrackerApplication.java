@@ -52,6 +52,7 @@
 
 // Import Librarie
 
+
 public class SmartFitnessTrackerApplication {
 
 	// Tempory string array holding existing usernames for testing purposes
@@ -63,6 +64,8 @@ public class SmartFitnessTrackerApplication {
 		TempConsoleUI.ClearConsole();
 
 		// Call the first launch screen
-		TempConsoleUI.FirstLaunchScreen();
+		User FirstLaunchUser = TempConsoleUI.FirstLaunchScreen();
+
+		// Save the user data to a file
 	}
 }

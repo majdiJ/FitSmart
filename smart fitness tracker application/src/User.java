@@ -1,9 +1,13 @@
 // User Class:
 // This class will store user information such as username, pin, name, age (dob), weight(kg), and fitness goals, workouts.
 
+// Import Libraries
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class User {
+public class User implements Serializable {
+	private static final long serialVersionUID = 1L;
+
     private String username;
     private String pin;
     private String name;
@@ -13,14 +17,12 @@ public class User {
     private Workout[] workouts; // Array of workouts
 
     // Constructor
-    public User(String username, String pin, String name, LocalDateTime dob, double weight, FitnessGoal fitnessGoal, Workout[] workouts) {
+    public User(String username, String pin, String name, LocalDateTime dob, double weight) {
         this.username = username;
         this.pin = pin;
         this.name = name;
         this.dob = dob;
         this.weight = weight;
-        this.fitnessGoal = fitnessGoal;
-        this.workouts = workouts;
     }
 
     // Getters and Setters

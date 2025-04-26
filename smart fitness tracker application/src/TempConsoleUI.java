@@ -31,15 +31,20 @@ public class TempConsoleUI {
         System.out.println("Success: " + message);
     }
     
-    public static void FirstLaunchScreen() {
+    public static User FirstLaunchScreen() {
+        String username = "";
+        String pin = "";
+        String name = "";
+        LocalDateTime dob = null;
+        double weight = 0.0;
+
         System.out.println("Welcome to FitSmart!");
         System.out.println("Your personal fitness tracker and goal manager.");
         System.out.println("It seems like this is your first time using the app, lets get you set up!");
 
         while (true) {
             System.out.println("Please enter your username:");
-        
-            String username = scanner.nextLine();
+            username = scanner.nextLine();
     
             // Check if username is valid
             if (Validation.isUsernameEmpty(username)) {
@@ -57,7 +62,7 @@ public class TempConsoleUI {
 
         while (true) {
             System.out.println("Please enter your PIN (4 digits):");
-            String pin = scanner.nextLine();
+            pin = scanner.nextLine();
     
             // Check if pin is valid
             if (Validation.isPinEmpty(pin)) {
@@ -76,7 +81,7 @@ public class TempConsoleUI {
         while (true) {
             System.out.println("Please enter your date of birth (YYYY-MM-DD):");
             String dobInput = scanner.nextLine();
-            LocalDateTime dob = LocalDateTime.parse(dobInput + "T00:00:00"); // Assuming time is not needed
+            dob = LocalDateTime.parse(dobInput + "T00:00:00"); // Assuming time is not needed
     
             // Check if date of birth is valid
             if (Validation.isDobEmpty(dob)) {
@@ -92,7 +97,7 @@ public class TempConsoleUI {
 
         while (true) {
             System.out.println("Please enter your name:");
-            String name = scanner.nextLine();
+            name = scanner.nextLine();
     
             // Check if name is valid
             if (Validation.isNameEmpty(name)) {
@@ -108,7 +113,7 @@ public class TempConsoleUI {
 
         while (true) {
             System.out.println("Please enter your weight (in kg):");
-            double weight = scanner.nextDouble();
+            weight = scanner.nextDouble();
     
             // Check if weight is valid
             if (Validation.isWeightEmpty(weight)) {
@@ -122,5 +127,9 @@ public class TempConsoleUI {
             }
         }
 
+        // After all validations, create the user object
+        User user = new User(username, pin, name, dob, weight);
+        // Return the user object to the main method
+        return user;
     }
 }
