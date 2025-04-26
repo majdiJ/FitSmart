@@ -51,21 +51,101 @@
 // - Robert Fory (Student ID: 25760416) (GitHub: [robertfory](...))
 
 // Import Librarie
+import java.util.List;
+import java.util.ArrayList;
 
 
 public class SmartFitnessTrackerApplication {
 
-	// Tempory string array holding existing usernames for testing purposes
-	public static String[] existingUsernames = { "user1", "user2", "user3" };
+	// Global list of users
+	public static userList userList = new userList();
+
+	// Global list of existing usernames
+	public static String[] existingUsernames = new String[0];
 
 	// Call the console UI
 	public static void main(String[] args) {
 		// Clear the console
 		TempConsoleUI.ClearConsole();
 
-		// Call the first launch screen
-		User FirstLaunchUser = TempConsoleUI.FirstLaunchScreen();
+		// Check if the data file exists
+		String filename = "userData.dat";
+		if (AppData.CheckDataExists.checkDataExists(filename)) {
+			// Load the user data from the file
+			userList = AppData.LoadData.loadUserList(filename);
+			if (userList != null) {
+				// Display the loaded user data
+				System.out.println("User data loaded successfully.");
 
-		// Save the user data to a file
+				// Add existing usernames to the list
+				for (User user : userList.getUsers()) {
+					existingUsernames = java.util.Arrays.copyOf(existingUsernames, existingUsernames.length + 1);
+					existingUsernames[existingUsernames.length - 1] = user.getUsername();
+				}
+				
+				User selectedUser = null;
+
+				while (true) {
+					// Display the list of users for user to select
+					int UserMenueChoice = TempConsoleUI.UserSelectionMenu(userList);
+
+					if (UserMenueChoice == 0) { // User wnats to exit the application
+						System.out.println("Exiting application.");
+						System.exit(0);
+					} else if (UserMenueChoice == 1) { // Create new user
+						User NewUserAccount = TempConsoleUI.NewUserCreationScreen();
+						if (NewUserAccount != null) {
+							// Save the new user data to userList object
+							userList userList = new userList();
+							userList.addUser(NewUserAccount);
+							// Save the user data to a file
+							AppData.SaveData.saveUserList(userList, filename);
+							System.out.println("User data saved successfully.");
+						} else {
+							TempConsoleUI.ErrorMessage("Failed to create user data.");
+						}
+					} else if (UserMenueChoice > 1 && UserMenueChoice <= userList.getUsers().length + 1) { // User selected an existing user
+						int selectedUserIndex = UserMenueChoice - 2; // Adjust for menu options
+						selectedUser = java.util.Arrays.asList(userList.getUsers()).get(selectedUserIndex);
+						System.out.println("Selected user: " + selectedUser.getUsername());
+						// Proceed with the application logic for the selected user by breaking out of the loop
+						break;
+					} else {
+						TempConsoleUI.ErrorMessage("Invalid selection. Please try again.");
+					}
+				}
+				
+				// Proceed with the application logic for the selected user
+				// for now, just print the selected user's details
+				if (selectedUser != null) {
+					System.out.println("User Details:");
+					System.out.println("Username: " + selectedUser.getUsername());
+					System.out.println("Name: " + selectedUser.getName());
+					System.out.println("Date of Birth: " + selectedUser.getDob());
+					System.out.println("Weight: " + selectedUser.getWeight());
+				} else {
+					TempConsoleUI.ErrorMessage("No user selected.");
+				}
+			} else {
+				TempConsoleUI.ErrorMessage("Failed to load user data.");
+			}
+		} else {
+			// If the data file does not exist, proceed with first launch setup and create a new user and save the data
+			System.out.println("No existing user data found. Starting first launch setup.");
+
+			// Display the first launch screen
+			TempConsoleUI.FirstLaunchScreen();
+			// Create a new user
+			User FirstLaunchUser = TempConsoleUI.NewUserCreationScreen();
+			if (FirstLaunchUser != null) {
+				// Save the new user data to userList 
+				userList.addUser(FirstLaunchUser);
+				// Save the user data to a file
+				AppData.SaveData.saveUserList(userList, filename);
+				System.out.println("User data saved successfully.");
+			} else {
+				TempConsoleUI.ErrorMessage("Failed to create user data.");
+			}
+		}
 	}
 }

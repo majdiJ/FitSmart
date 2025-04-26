@@ -31,16 +31,22 @@ public class TempConsoleUI {
         System.out.println("Success: " + message);
     }
     
-    public static User FirstLaunchScreen() {
+    // First Launch Screen Method
+    public static void FirstLaunchScreen() {
+        System.out.println("Welcome to FitSmart!");
+        System.out.println("Your personal fitness tracker and goal manager.");
+        System.out.println("It seems like this is your first time using the app, lets get you set up!");
+    }
+
+    // New User Creation Screen Method
+    public static User NewUserCreationScreen() {
         String username = "";
         String pin = "";
         String name = "";
         LocalDateTime dob = null;
         double weight = 0.0;
 
-        System.out.println("Welcome to FitSmart!");
-        System.out.println("Your personal fitness tracker and goal manager.");
-        System.out.println("It seems like this is your first time using the app, lets get you set up!");
+        System.out.println("Let's make a new user!");
 
         while (true) {
             System.out.println("Please enter your username:");
@@ -80,16 +86,17 @@ public class TempConsoleUI {
 
         while (true) {
             System.out.println("Please enter your date of birth (YYYY-MM-DD):");
-            String dobInput = scanner.nextLine();
-            dob = LocalDateTime.parse(dobInput + "T00:00:00"); // Assuming time is not needed
-    
-            // Check if date of birth is valid
-            if (Validation.isDobEmpty(dob)) {
+            String stringDOB = scanner.nextLine();
+
+            if (!Validation.canConvertStringToLocalDateTime(stringDOB)) {
+                ErrorMessage("Invalid date format. Please use YYYY-MM-DD.");
+            } else if (Validation.isDobEmpty(Validation.convertStringToLocalDateTime(stringDOB))) {
                 ErrorMessage("Date of Birth cannot be empty.");
-            } else if (!Validation.isDobPast(dob)) {
+            } else if (!Validation.isDobPast(Validation.convertStringToLocalDateTime(stringDOB))) {
                 ErrorMessage("Date of Birth must be in the past.");
             } else {
                 SuccessMessage("Date of Birth is valid.");
+                dob = Validation.convertStringToLocalDateTime(stringDOB);
                 // Proceed with the rest of the setup
                 break; // Exit the loop if date of birth is valid
             }
@@ -131,5 +138,20 @@ public class TempConsoleUI {
         User user = new User(username, pin, name, dob, weight);
         // Return the user object to the main method
         return user;
+    }
+
+    // User selection menu
+    public static int UserSelectionMenu(userList userList) {
+
+        while (true) {
+            System.out.println("Select a user:");
+            System.out.println("0. Exit");
+            System.out.println("1. Create a new user");
+            for (int i = 0; i < userList.getUsers().length; i++) {
+                System.out.println((i + 2) + ". " + userList.getUsers()[i].getUsername());
+            }
+            int choice = scanner.nextInt();
+            return choice; // Return the user's choice
+        }
     }
 }

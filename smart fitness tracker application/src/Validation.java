@@ -34,6 +34,18 @@ public class Validation {
     }
 
     // Date of Birth Validation
+    public static boolean canConvertStringToLocalDateTime(String dobInput) {
+        try {
+            LocalDateTime.parse(dobInput + "T00:00:00");
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    // String to LocalDateTime conversion (in YYYY-MM-DD format)
+    public static LocalDateTime convertStringToLocalDateTime(String dobInput) {
+        return LocalDateTime.parse(dobInput + "T00:00:00");
+    }
     public static boolean isDobEmpty(LocalDateTime dob) {
         return dob == null;
     }
