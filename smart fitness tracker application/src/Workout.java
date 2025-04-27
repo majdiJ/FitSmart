@@ -24,6 +24,27 @@ public class Workout implements Serializable {
         this.notes = notes;
     }
 
+    // Predefined workout types
+    public static final String[] WORKOUT_TYPES = {
+        "Running",
+        "Cycling",
+        "Swimming",
+        "Yoga",
+        "Weightlifting",
+        "Hiking",
+        "Dancing",
+        "Rowing",
+        "Pilates",
+        "Walking",
+        "Aerobics",
+        "Boxing",
+        "Rock Climbing",
+        "CrossFit",
+        "Martial Arts",
+        "Jump Rope",
+        "Other"
+    };
+
     // Getters and Setters
     public String getType() {
         return type;

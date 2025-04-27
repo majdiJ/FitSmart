@@ -15,6 +15,9 @@ public class User implements Serializable {
     private double weight; // in kg
     private FitnessGoal fitnessGoal;
     private Workout[] workouts; // Array of workouts
+    private Water[] waterIntake; // Array of water intake
+    private Sleep[] sleep; // Array of sleep records
+    private Weight[] weightRecords; // Array of weight records
 
     // Constructor
     public User(String username, String pin, String name, LocalDateTime dob, double weight) {
@@ -126,6 +129,66 @@ public class User implements Serializable {
                 }
             }
             workouts = newWorkouts;
+        }
+    }
+
+    public Water[] getWaterIntake() {
+        return waterIntake;
+    }
+    public void setWaterIntake(Water[] waterIntake) {
+        this.waterIntake = waterIntake;
+    }
+    public void addWaterIntake(Water water) {
+        if (water == null) {
+            throw new IllegalArgumentException("Water intake cannot be null.");
+        }
+        if (waterIntake == null) {
+            waterIntake = new Water[] { water };
+        } else {
+            Water[] newWaterIntake = new Water[waterIntake.length + 1];
+            System.arraycopy(waterIntake, 0, newWaterIntake, 0, waterIntake.length);
+            newWaterIntake[waterIntake.length] = water;
+            waterIntake = newWaterIntake;
+        }
+    }
+
+    public Sleep[] getSleep() {
+        return sleep;
+    }
+    public void setSleep(Sleep[] sleep) {
+        this.sleep = sleep;
+    }
+    public void addSleep(Sleep sleep) {
+        if (sleep == null) {
+            throw new IllegalArgumentException("Sleep record cannot be null.");
+        }
+        if (this.sleep == null) {
+            this.sleep = new Sleep[] { sleep };
+        } else {
+            Sleep[] newSleep = new Sleep[this.sleep.length + 1];
+            System.arraycopy(this.sleep, 0, newSleep, 0, this.sleep.length);
+            newSleep[this.sleep.length] = sleep;
+            this.sleep = newSleep;
+        }
+    }
+
+    public Weight[] getWeightRecords() {
+        return weightRecords;
+    }
+    public void setWeightRecords(Weight[] weightRecords) {
+        this.weightRecords = weightRecords;
+    }
+    public void addWeightRecord(Weight weight) {
+        if (weight == null) {
+            throw new IllegalArgumentException("Weight record cannot be null.");
+        }
+        if (this.weightRecords == null) {
+            this.weightRecords = new Weight[] { weight };
+        } else {
+            Weight[] newWeightRecords = new Weight[this.weightRecords.length + 1];
+            System.arraycopy(this.weightRecords, 0, newWeightRecords, 0, this.weightRecords.length);
+            newWeightRecords[this.weightRecords.length] = weight;
+            this.weightRecords = newWeightRecords;
         }
     }
 }

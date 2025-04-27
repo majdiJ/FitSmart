@@ -64,7 +64,7 @@ public class SmartFitnessTrackerApplication {
 
 	// Call the console UI
 	public static void main(String[] args) {
-		// Clear the console and buffer
+		// Clear the console
 		TempConsoleUI.ClearConsole();
 
 		// Check if the data file exists
@@ -102,7 +102,7 @@ public class SmartFitnessTrackerApplication {
 						} else {
 							TempConsoleUI.ErrorMessage("Failed to create user data.");
 						}
-					} else if (UserMenueChoice > 1 && UserMenueChoice <= userList.getUsers().length + 1) { // User selected an  existing user
+					} else if (UserMenueChoice > 1 && UserMenueChoice <= userList.getUsers().length + 1) { // User selected an existing user
 						int selectedUserIndex = UserMenueChoice - 2; // Adjust for menu options
 						selectedUser = java.util.Arrays.asList(userList.getUsers()).get(selectedUserIndex);
 						System.out.println("Selected user: " + selectedUser.getUsername());
@@ -135,41 +135,138 @@ public class SmartFitnessTrackerApplication {
 					}
 				}
 
-				// Set fitness goals
-				FitnessGoal fitnessGoal = TempConsoleUI.SetFitnessGoals();
+				// Clear the console and buffer
+				TempConsoleUI.ClearConsole();
 
-				if (fitnessGoal != null) {
-					selectedUser.setFitnessGoal(fitnessGoal);
-					System.out.println("Fitness goals set successfully.");
+				// Check if fitness goals have been set
+				FitnessGoal fitnessGoal = selectedUser.getFitnessGoal();
+
+				if (fitnessGoal == null || !fitnessGoal.isGoalSet()) {
+					// Prompt user to set fitness goals
+					fitnessGoal = TempConsoleUI.SetFitnessGoals();
+
+					if (fitnessGoal != null) {
+						selectedUser.setFitnessGoal(fitnessGoal);
+						System.out.println("Fitness goals set successfully.");
+
+						// Save the updated user data to a file
+						AppData.SaveData.saveUserList(userList, filename);
+						System.out.println("User data saved successfully.");
+					} else {
+						TempConsoleUI.ErrorMessage("Failed to set fitness goals.");
+					}
 				} else {
-					TempConsoleUI.ErrorMessage("Failed to set fitness goals.");
+					System.out.println("Fitness goals are already set. Skipping this step.");
 				}
 
-				// Proceed with the application logic for the selected user
-				int choice = TempConsoleUI.UserMainMenu();
+				while (true) {
 
-				// Switch case for user choice
-				switch (choice) {
-					case 1:
-						// Log a workout
-						// TempConsoleUI.LogWorkout(selectedUser);
-						break;
-					case 2:
-						// Set fitness goals
-						// TempConsoleUI.SetFitnessGoals(selectedUser);
-						break;
-					case 3:
-						// View progress reports
-						// TempConsoleUI.ViewProgressReports(selectedUser);
-						break;
-					case 4:
-						// Exit the application
-						System.out.println("Exiting application.");
-						System.exit(0);
-					default:
-						TempConsoleUI.ErrorMessage("Invalid choice. Please try again.");
+					// Proceed with the application logic for the selected user
+					int choice = TempConsoleUI.UserMainMenu();
+
+					// Switch case for user choice
+					switch (choice) {
+						case 1: // View profile
+							TempConsoleUI.ClearConsole();
+							TempConsoleUI.ViewUserProfile(selectedUser);
+							break;
+
+						case 2: // Set fitness goals
+							TempConsoleUI.ClearConsole();
+							fitnessGoal = TempConsoleUI.SetFitnessGoals();
+							if (fitnessGoal != null) {
+								selectedUser.setFitnessGoal(fitnessGoal);
+								System.out.println("Fitness goals set successfully.");
+								// Save the updated user data to a file
+								AppData.SaveData.saveUserList(userList, filename);
+								System.out.println("User data saved successfully.");
+							} else {
+								TempConsoleUI.ErrorMessage("Failed to set fitness goals.");
+							}
+							break;
+
+						case 3: // View fitness goals
+							TempConsoleUI.ClearConsole();
+							TempConsoleUI.ViewFitnessGoals(selectedUser.getFitnessGoal());
+							break;
+
+						case 4: // Log workout
+							TempConsoleUI.ClearConsole();
+							Workout workout = TempConsoleUI.LogWorkout();
+							if (workout != null) {
+								selectedUser.addWorkout(workout);
+								System.out.println("Workout logged successfully.");
+								// Save the updated user data to a file
+								AppData.SaveData.saveUserList(userList, filename);
+								System.out.println("User data saved successfully.");
+							} else {
+								TempConsoleUI.ErrorMessage("Failed to log workout.");
+							}
+							break;
+						
+						case 5: // View workout history
+							TempConsoleUI.ClearConsole();
+							TempConsoleUI.ViewWorkoutHistory(selectedUser.getWorkouts());
+							break;
+
+						case 6: // View progress report
+							TempConsoleUI.ClearConsole();
+							// TempConsoleUI.ViewProgressReport(selectedUser.getWorkouts(), selectedUser.getFitnessGoal());
+							break;
+
+						case 8: // Log water intake
+							TempConsoleUI.ClearConsole();
+							Water water = TempConsoleUI.LogWaterIntake();
+							if (water != null) {
+								selectedUser.addWaterIntake(water);
+								System.out.println("Water intake logged successfully.");
+								// Save the updated user data to a file
+								AppData.SaveData.saveUserList(userList, filename);
+								System.out.println("User data saved successfully.");
+							} else {
+								TempConsoleUI.ErrorMessage("Failed to log water intake.");
+							}
+							break;
+						
+						case 9: // Log sleep
+							TempConsoleUI.ClearConsole();
+							Sleep sleep = TempConsoleUI.LogSleep();
+							if (sleep != null) {
+								selectedUser.addSleep(sleep);
+								System.out.println("Sleep logged successfully.");
+								// Save the updated user data to a file
+								AppData.SaveData.saveUserList(userList, filename);
+								System.out.println("User data saved successfully.");
+							} else {
+								TempConsoleUI.ErrorMessage("Failed to log sleep.");
+							}
+							break;
+						
+						case 10: // Log weight
+							TempConsoleUI.ClearConsole();
+							Weight weight = TempConsoleUI.LogWeight();
+							if (weight != null) {
+								selectedUser.addWeightRecord(weight);
+								System.out.println("Weight logged successfully.");
+								// Save the updated user data to a file
+								AppData.SaveData.saveUserList(userList, filename);
+								System.out.println("User data saved successfully.");
+							} else {
+								TempConsoleUI.ErrorMessage("Failed to log weight.");
+							}
+							break;
+						
+						case 11: // water, sleep, weight history
+							TempConsoleUI.ClearConsole();
+							TempConsoleUI.ViewWaterSleepWeightHistory(selectedUser);
+							break;
+						
+						case 12: // Exit
+							TempConsoleUI.ClearConsole();
+							System.out.println("Exiting application.");
+							System.exit(0);
+					}
 				}
-
 			} else {
 				TempConsoleUI.ErrorMessage("Failed to load user data.");
 			}

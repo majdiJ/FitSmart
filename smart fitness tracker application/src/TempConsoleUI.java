@@ -197,6 +197,7 @@ public class TempConsoleUI {
         int sleepMinutesGoal = 0;
         double weightGoal = 0.0;
         double strengthGoal = 0.0;
+        boolean isGoalSet = false;
 
         while (true) {
             System.out.println("Would you like to set a daily step count goal? (y/n)");
@@ -205,6 +206,8 @@ public class TempConsoleUI {
             if (Validation.isYesNoEmpty(dailyStepCountChoice) || !Validation.isYesNoValid(dailyStepCountChoice)) {
                 ErrorMessage("Invalid choice. Please enter 'y' or 'n'.");
             } else if (dailyStepCountChoice.equalsIgnoreCase("y")) {
+
+                isGoalSet = true; // Set the goal flag to true
                 
                 while (true) {
                     System.out.println("Please enter your daily step count goal:");
@@ -237,6 +240,8 @@ public class TempConsoleUI {
             if (Validation.isYesNoEmpty(workoutDurationChoice) || !Validation.isYesNoValid(workoutDurationChoice)) {
                 ErrorMessage("Invalid choice. Please enter 'y' or 'n'.");
             } else if (workoutDurationChoice.equalsIgnoreCase("y")) {
+
+                isGoalSet = true; // Set the goal flag to true
                 
                 while (true) {
                     System.out.println("Please enter your weekly workout duration goal (in minutes):");
@@ -269,6 +274,8 @@ public class TempConsoleUI {
             if (Validation.isYesNoEmpty(caloriesBurnedChoice) || !Validation.isYesNoValid(caloriesBurnedChoice)) {
                 ErrorMessage("Invalid choice. Please enter 'y' or 'n'.");
             } else if (caloriesBurnedChoice.equalsIgnoreCase("y")) {
+
+                isGoalSet = true; // Set the goal flag to true
                 
                 while (true) {
                     System.out.println("Please enter your weekly calories burned goal:");
@@ -301,6 +308,8 @@ public class TempConsoleUI {
             if (Validation.isYesNoEmpty(workoutsPerWeekChoice) || !Validation.isYesNoValid(workoutsPerWeekChoice)) {
                 ErrorMessage("Invalid choice. Please enter 'y' or 'n'.");
             } else if (workoutsPerWeekChoice.equalsIgnoreCase("y")) {
+
+                isGoalSet = true; // Set the goal flag to true
                 
                 while (true) {
                     System.out.println("Please enter your weekly workout session per week goal:");
@@ -333,6 +342,8 @@ public class TempConsoleUI {
             if (Validation.isYesNoEmpty(dailyWaterIntakeChoice) || !Validation.isYesNoValid(dailyWaterIntakeChoice)) {
                 ErrorMessage("Invalid choice. Please enter 'y' or 'n'.");
             } else if (dailyWaterIntakeChoice.equalsIgnoreCase("y")) {
+
+                isGoalSet = true; // Set the goal flag to true
                 
                 while (true) {
                     System.out.println("Please enter your daily water intake goal (in liters):");
@@ -365,6 +376,8 @@ public class TempConsoleUI {
             if (Validation.isYesNoEmpty(sleepMinutesChoice) || !Validation.isYesNoValid(sleepMinutesChoice)) {
                 ErrorMessage("Invalid choice. Please enter 'y' or 'n'.");
             } else if (sleepMinutesChoice.equalsIgnoreCase("y")) {
+
+                isGoalSet = true; // Set the goal flag to true
                 
                 while (true) {
                     System.out.println("Please enter your sleep minutes goal:");
@@ -397,6 +410,8 @@ public class TempConsoleUI {
             if (Validation.isYesNoEmpty(weightGoalChoice) || !Validation.isYesNoValid(weightGoalChoice)) {
                 ErrorMessage("Invalid choice. Please enter 'y' or 'n'.");
             } else if (weightGoalChoice.equalsIgnoreCase("y")) {
+
+                isGoalSet = true; // Set the goal flag to true
                 
                 while (true) {
                     System.out.println("Please enter your weight goal:");
@@ -429,6 +444,8 @@ public class TempConsoleUI {
             if (Validation.isYesNoEmpty(strengthGoalChoice) || !Validation.isYesNoValid(strengthGoalChoice)) {
                 ErrorMessage("Invalid choice. Please enter 'y' or 'n'.");
             } else if (strengthGoalChoice.equalsIgnoreCase("y")) {
+
+                isGoalSet = true; // Set the goal flag to true
                 
                 while (true) {
                     System.out.println("Please enter your strength goal:");
@@ -447,6 +464,7 @@ public class TempConsoleUI {
                         break; // Exit the loop if the goal is set
                     }
                 }
+
                 break; // Exit the loop if the goal is set
             } else {
                 SuccessMessage("No strength goal set.");
@@ -455,12 +473,11 @@ public class TempConsoleUI {
         }
 
         // Create a new FitnessGoal object with the set goals
-        FitnessGoal fitnessGoal = new FitnessGoal(dailyStepCountGoal, workoutDurationGoal, caloriesBurnedGoal, workoutsPerWeekGoal, dailyWaterIntakeGoal, sleepMinutesGoal, weightGoal, strengthGoal);
+        FitnessGoal fitnessGoal = new FitnessGoal(dailyStepCountGoal, workoutDurationGoal, caloriesBurnedGoal, workoutsPerWeekGoal, dailyWaterIntakeGoal, sleepMinutesGoal, weightGoal, strengthGoal, isGoalSet);
         // Return the fitness goal object to the main method
         return fitnessGoal;
     }
             
-
     // User main menu
     public static int UserMainMenu() {
         System.out.println("Welcome to the main menu!");
@@ -470,18 +487,384 @@ public class TempConsoleUI {
         System.out.println("4. Log Workout");
         System.out.println("5. View Workout History");
         System.out.println("6. View Progress Reports");
-        System.out.println("7. Exit");
+        System.out.println("8. Log Water Intake");
+        System.out.println("9. Log sleep");
+        System.out.println("10. Log weight");
+        System.out.println("11. View water, sleep, and weight history");
+        System.out.println("12. Exit Application");
 
         while (true) {
             System.out.println("Please select an option:");
             int choice = scanner.nextInt();
 
             // validate the choice
-            if (choice <= 0 || choice >= 7) {
+            if (choice <= 0 || choice >= 12) {
                 ErrorMessage("Invalid choice. Please try again.");
             } else {
                 // Return the user's choice
                 return choice;
+            }
+        }
+    }
+
+    // View user profile
+    public static void ViewUserProfile(User user) {
+        System.out.println("User Profile:");
+        System.out.println("Username: " + user.getUsername());
+        System.out.println("Name: " + user.getName());
+        System.out.println("Date of Birth: " + user.getDob());
+        System.out.println("Weight: " + user.getWeight() + " kg");
+        System.out.println("Fitness Goals: " + user.getFitnessGoal());
+    }
+
+    // View fitness goals
+    public static void ViewFitnessGoals(FitnessGoal fitnessGoal) {
+        System.out.println("Fitness Goals:");
+        System.out.println("Daily Step Count: " + fitnessGoal.getDailyStepCount());
+        System.out.println("Workout Duration: " + fitnessGoal.getWorkoutDuration() + " minutes");
+        System.out.println("Calories Burned: " + fitnessGoal.getCaloriesBurned());
+        System.out.println("Workouts Per Week: " + fitnessGoal.getWorkoutsPerWeek());
+        System.out.println("Daily Water Intake: " + fitnessGoal.getDailyWaterIntake() + " liters");
+        System.out.println("Sleep Minutes: " + fitnessGoal.getsleepMinutes() + " minutes");
+        System.out.println("Weight Goal: " + fitnessGoal.getWeightGoal() + " kg");
+        System.out.println("Strength Goal: " + fitnessGoal.getStrength() + " kg");
+    }
+
+    // Log workout
+    public static Workout LogWorkout() {
+        System.out.println("Log Workout:");
+
+        System.out.println("Please select a workout type:");
+        for (int i = 0; i < Workout.WORKOUT_TYPES.length; i++) {
+            System.out.println((i + 1) + ". " + Workout.WORKOUT_TYPES[i]);
+        }
+
+        int workoutTypeChoice = 0;
+
+        while (true) {
+            System.out.println("Please select a workout type:");
+            workoutTypeChoice = scanner.nextInt();
+
+            // Validate the workout type choice
+            if (workoutTypeChoice <= 0 || workoutTypeChoice > Workout.WORKOUT_TYPES.length) {
+                ErrorMessage("Invalid choice. Please try again.");
+            } else {
+                String workoutType = Workout.WORKOUT_TYPES[workoutTypeChoice - 1];
+                System.out.println("You selected: " + workoutType);
+                break; // Exit the loop if the choice is valid
+            }
+        }
+
+        // Convert user intger option to string
+        String workoutType = Workout.WORKOUT_TYPES[workoutTypeChoice - 1];
+
+        int duration = 0;
+
+        while (true) {
+            System.out.println("Please enter the workout duration (in minutes):");
+            duration = scanner.nextInt();
+
+            // Validate the workout duration
+            if (duration <= 0) {
+                ErrorMessage("Workout duration must be positive.");
+            } else {
+                SuccessMessage("Workout duration is valid.");
+                break; // Exit the loop if the duration is valid
+            }
+        }
+
+        int caloriesBurned = 0;
+
+        while (true) {
+            System.out.println("Please enter the calories burned:");
+            caloriesBurned = scanner.nextInt();
+
+            // Validate the calories burned
+            if (caloriesBurned < 0) {
+                ErrorMessage("Calories burned cannot be negative.");
+            } else {
+                SuccessMessage("Calories burned is valid.");
+                break; // Exit the loop if the calories burned is valid
+            }
+        }
+
+        // Get the current date and time
+        LocalDateTime dateTime = LocalDateTime.now();
+        // Ask the user if they want to use the current date and timw or enter a custom date and time
+        while (true) {
+            System.out.println("Would you like to use the current date and time? (y/n):");
+            String dateTimeChoice = scanner.nextLine();
+
+            if (Validation.isYesNoEmpty(dateTimeChoice) || !Validation.isYesNoValid(dateTimeChoice)) {
+                ErrorMessage("Invalid choice. Please enter 'y' or 'n'.");
+            } else if (dateTimeChoice.equalsIgnoreCase("y")) {
+                SuccessMessage("Using current date and time: " + dateTime);
+                break; // Exit the loop if the user chooses to use the current date and time
+            } else {
+                System.out.println("Please enter the custom date and time (YYYY-MM-DD HH:MM):");
+                String customDateTimeString = scanner.nextLine();
+                // Validate the custom date and time
+                if (!Validation.canConvertStringToLocalDateTime(customDateTimeString)) {
+                    ErrorMessage("Invalid date format. Please use YYYY-MM-DD HH:MM.");
+                } else {
+                    dateTime = Validation.convertStringToLocalDateTime(customDateTimeString);
+                    SuccessMessage("Custom date and time set to: " + dateTime);
+                    break; // Exit the loop if the custom date and time is valid
+                }
+            }
+        }
+
+        while (true) {
+            System.out.println("Please enter any notes for the workout (optional):");
+            String notes = scanner.nextLine();
+
+            // Validate the notes
+            if (notes == null || notes.isEmpty()) {
+                ErrorMessage("Notes cannot be empty.");
+            } else {
+                SuccessMessage("Notes are valid.");
+                break; // Exit the loop if the notes are valid
+            }
+        }
+
+        // Create a new Workout object with the entered details
+        Workout workout = new Workout(workoutType, duration, caloriesBurned, dateTime, null);
+        // Return the workout object to the main method
+        return workout;
+    }
+
+    // View workout history
+    public static void ViewWorkoutHistory(Workout[] workoutHistory) {
+        System.out.println("Workout History:");
+        for (int i = 0; i < workoutHistory.length; i++) {
+            System.out.println((i + 1) + ". " + workoutHistory[i].getType() + " - " + workoutHistory[i].getDuration() + " minutes - " + workoutHistory[i].getCaloriesBurned() + " calories burned - " + workoutHistory[i].getDateTime());
+        }
+    }
+
+    // View progress reports
+    public static void ViewProgressReports(User user) {
+    }
+
+    // Log water intake
+    public static Water LogWaterIntake() {
+        System.out.println("Log Water Intake:");
+
+        double amount = 0.0;
+
+        while (true) {
+            System.out.println("Please enter the amount of water intake (in liters):");
+            amount = scanner.nextDouble();
+
+            // Validate the water intake amount
+            if (amount <= 0) {
+                ErrorMessage("Water intake amount must be positive.");
+            } else {
+                SuccessMessage("Water intake amount is valid.");
+                break; // Exit the loop if the amount is valid
+            }
+        }
+
+        // Get the current date and time
+        LocalDateTime dateTime = LocalDateTime.now();
+        // Ask the user if they want to use the current date and time or enter a custom date and time
+        while (true) {
+            System.out.println("Would you like to use the current date and time? (y/n):");
+            String dateTimeChoice = scanner.nextLine();
+
+            if (Validation.isYesNoEmpty(dateTimeChoice) || !Validation.isYesNoValid(dateTimeChoice)) {
+                ErrorMessage("Invalid choice. Please enter 'y' or 'n'.");
+            } else if (dateTimeChoice.equalsIgnoreCase("y")) {
+                SuccessMessage("Using current date and time: " + dateTime);
+                break; // Exit the loop if the user chooses to use the current date and time
+            } else {
+                System.out.println("Please enter the custom date and time (YYYY-MM-DD HH:MM):");
+                String customDateTimeString = scanner.nextLine();
+                // Validate the custom date and time
+                if (!Validation.canConvertStringToLocalDateTime(customDateTimeString)) {
+                    ErrorMessage("Invalid date format. Please use YYYY-MM-DD HH:MM.");
+                } else {
+                    dateTime = Validation.convertStringToLocalDateTime(customDateTimeString);
+                    SuccessMessage("Custom date and time set to: " + dateTime);
+                    break; // Exit the loop if the custom date and time is valid
+                }
+            }
+        }
+
+        while (true) {
+            System.out.println("Please enter any notes for the water intake (optional):");
+            String notes = scanner.nextLine();
+
+            // Validate the notes
+            if (notes == null || notes.isEmpty()) {
+                ErrorMessage("Notes cannot be empty.");
+            } else {
+                SuccessMessage("Notes are valid.");
+                break; // Exit the loop if the notes are valid
+            }
+        }
+
+        // Create a new Water object with the entered details
+        Water water = new Water(amount, dateTime, null);
+        // Return the water object to the main method
+        return water;
+    }
+
+    // Log sleep
+    public static Sleep LogSleep() {
+        System.out.println("Log Sleep:");
+
+        int duration = 0;
+
+        while (true) {
+            System.out.println("Please enter the sleep duration (in minutes):");
+            duration = scanner.nextInt();
+
+            // Validate the sleep duration
+            if (duration <= 0) {
+                ErrorMessage("Sleep duration must be positive.");
+            } else {
+                SuccessMessage("Sleep duration is valid.");
+                break; // Exit the loop if the duration is valid
+            }
+        }
+
+        // Get the current date and time
+        LocalDateTime dateTime = LocalDateTime.now();
+        // Ask the user if they want to use the current date and time or enter a custom date and time
+        while (true) {
+            System.out.println("Would you like to use the current date and time? (y/n):");
+            String dateTimeChoice = scanner.nextLine();
+
+            if (Validation.isYesNoEmpty(dateTimeChoice) || !Validation.isYesNoValid(dateTimeChoice)) {
+                ErrorMessage("Invalid choice. Please enter 'y' or 'n'.");
+            } else if (dateTimeChoice.equalsIgnoreCase("y")) {
+                SuccessMessage("Using current date and time: " + dateTime);
+                break; // Exit the loop if the user chooses to use the current date and time
+            } else {
+                System.out.println("Please enter the custom date and time (YYYY-MM-DD HH:MM):");
+                String customDateTimeString = scanner.nextLine();
+                // Validate the custom date and time
+                if (!Validation.canConvertStringToLocalDateTime(customDateTimeString)) {
+                    ErrorMessage("Invalid date format. Please use YYYY-MM-DD HH:MM.");
+                } else {
+                    dateTime = Validation.convertStringToLocalDateTime(customDateTimeString);
+                    SuccessMessage("Custom date and time set to: " + dateTime);
+                    break; // Exit the loop if the custom date and time is valid
+                }
+            }
+        }
+
+        while (true) {
+            System.out.println("Please enter any notes for the sleep (optional):");
+            String notes = scanner.nextLine();
+
+            // Validate the notes
+            if (notes == null || notes.isEmpty()) {
+                ErrorMessage("Notes cannot be empty.");
+            } else {
+                SuccessMessage("Notes are valid.");
+                break; // Exit the loop if the notes are valid
+            }
+        }
+
+        // Create a new Sleep object with the entered details
+        Sleep sleep = new Sleep(duration, dateTime, null);
+        // Return the sleep object to the main method
+        return sleep;
+    }
+
+    // Log weight
+    public static Weight LogWeight() {
+        System.out.println("Log Weight:");
+
+        double weight = 0.0;
+
+        while (true) {
+            System.out.println("Please enter the weight (in kg):");
+            weight = scanner.nextDouble();
+
+            // Validate the weight
+            if (weight <= 0) {
+                ErrorMessage("Weight must be positive.");
+            } else {
+                SuccessMessage("Weight is valid.");
+                break; // Exit the loop if the weight is valid
+            }
+        }
+
+        // Get the current date and time
+        LocalDateTime dateTime = LocalDateTime.now();
+        // Ask the user if they want to use the current date and time or enter a custom date and time
+        while (true) {
+            System.out.println("Would you like to use the current date and time? (y/n):");
+            String dateTimeChoice = scanner.nextLine();
+
+            if (Validation.isYesNoEmpty(dateTimeChoice) || !Validation.isYesNoValid(dateTimeChoice)) {
+                ErrorMessage("Invalid choice. Please enter 'y' or 'n'.");
+            } else if (dateTimeChoice.equalsIgnoreCase("y")) {
+                SuccessMessage("Using current date and time: " + dateTime);
+                break; // Exit the loop if the user chooses to use the current date and time
+            } else {
+                System.out.println("Please enter the custom date and time (YYYY-MM-DD HH:MM):");
+                String customDateTimeString = scanner.nextLine();
+                // Validate the custom date and time
+                if (!Validation.canConvertStringToLocalDateTime(customDateTimeString)) {
+                    ErrorMessage("Invalid date format. Please use YYYY-MM-DD HH:MM.");
+                } else {
+                    dateTime = Validation.convertStringToLocalDateTime(customDateTimeString);
+                    SuccessMessage("Custom date and time set to: " + dateTime);
+                    break; // Exit the loop if the custom date and time is valid
+                }
+            }
+        }
+
+        while (true) {
+            System.out.println("Please enter any notes for the weight log (optional):");
+            String notes = scanner.nextLine();
+
+            // Validate the notes
+            if (notes == null || notes.isEmpty()) {
+                ErrorMessage("Notes cannot be empty.");
+            } else {
+                SuccessMessage("Notes are valid.");
+                break; // Exit the loop if the notes are valid
+            }
+        }
+
+        // Create a new Weight object with the entered details
+        Weight weightLog = new Weight(weight, dateTime, null);
+        // Return the weight object to the main method
+        return weightLog;
+    }
+
+    // View water, sleep, and weight history
+    public static void ViewWaterSleepWeightHistory(User user) {
+        System.out.println("Water, Sleep, and Weight History:");
+
+        System.out.println("Water Intake History:");
+        if (user.getWaterIntake() == null || user.getWaterIntake().length == 0) {
+            System.out.println("No water intake records saved.");
+        } else {
+            for (Water water : user.getWaterIntake()) {
+                System.out.println(water.getAmount() + " liters - " + water.getDateTime());
+            }
+        }
+
+        System.out.println("Sleep History:");
+        if (user.getSleep() == null || user.getSleep().length == 0) {
+            System.out.println("No sleep records saved.");
+        } else {
+            for (Sleep sleep : user.getSleep()) {
+                System.out.println(sleep.getDuration() + " minutes - " + sleep.getDateTime());
+            }
+        }
+
+        System.out.println("Weight History:");
+        if (user.getWeightRecords() == null || user.getWeightRecords().length == 0) {
+            System.out.println("No weight records saved.");
+        } else {
+            for (Weight weight : user.getWeightRecords()) {
+                System.out.println(weight.getLogedWeight() + " kg - " + weight.getDateTime());
             }
         }
     }

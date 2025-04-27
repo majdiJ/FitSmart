@@ -14,9 +14,10 @@ public class FitnessGoal implements Serializable {
 	private int sleepMinutes; // in minutes
 	private double weightGoal; // in kg
 	private double strength; // in kg
+    private boolean isGoalSet; // flag to check if a goal is set
 
     // Constructor
-    public FitnessGoal(int dailyStepCount, int workoutDuration, int caloriesBurned, int workoutsPerWeek, double dailyWaterIntake, int sleepMinutes, double weightGoal, double strength) {
+    public FitnessGoal(int dailyStepCount, int workoutDuration, int caloriesBurned, int workoutsPerWeek, double dailyWaterIntake, int sleepMinutes, double weightGoal, double strength, boolean isGoalSet) {
         this.dailyStepCount = dailyStepCount;
         this.workoutDuration = workoutDuration;
         this.caloriesBurned = caloriesBurned;
@@ -25,6 +26,7 @@ public class FitnessGoal implements Serializable {
         this.sleepMinutes = sleepMinutes;
         this.weightGoal = weightGoal;
         this.strength = strength;
+        this.isGoalSet = isGoalSet;
     }
 
     // Getters and Setters
@@ -130,5 +132,12 @@ public class FitnessGoal implements Serializable {
         } else {
             this.strength = strength;
         }
+    }
+
+    public boolean isGoalSet() {
+        return isGoalSet;
+    }
+    public void setGoalSet(boolean isGoalSet) {
+        this.isGoalSet = isGoalSet;
     }
 }
