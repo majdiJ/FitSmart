@@ -54,7 +54,6 @@
 import java.util.List;
 import java.util.ArrayList;
 
-
 public class SmartFitnessTrackerApplication {
 
 	// Global list of users
@@ -65,7 +64,7 @@ public class SmartFitnessTrackerApplication {
 
 	// Call the console UI
 	public static void main(String[] args) {
-		// Clear the console
+		// Clear the console and buffer
 		TempConsoleUI.ClearConsole();
 
 		// Check if the data file exists
@@ -82,7 +81,7 @@ public class SmartFitnessTrackerApplication {
 					existingUsernames = java.util.Arrays.copyOf(existingUsernames, existingUsernames.length + 1);
 					existingUsernames[existingUsernames.length - 1] = user.getUsername();
 				}
-				
+
 				User selectedUser = null;
 
 				while (true) {
@@ -96,7 +95,6 @@ public class SmartFitnessTrackerApplication {
 						User NewUserAccount = TempConsoleUI.NewUserCreationScreen();
 						if (NewUserAccount != null) {
 							// Save the new user data to userList object
-							userList userList = new userList();
 							userList.addUser(NewUserAccount);
 							// Save the user data to a file
 							AppData.SaveData.saveUserList(userList, filename);
@@ -104,33 +102,80 @@ public class SmartFitnessTrackerApplication {
 						} else {
 							TempConsoleUI.ErrorMessage("Failed to create user data.");
 						}
-					} else if (UserMenueChoice > 1 && UserMenueChoice <= userList.getUsers().length + 1) { // User selected an existing user
+					} else if (UserMenueChoice > 1 && UserMenueChoice <= userList.getUsers().length + 1) { // User selected an  existing user
 						int selectedUserIndex = UserMenueChoice - 2; // Adjust for menu options
 						selectedUser = java.util.Arrays.asList(userList.getUsers()).get(selectedUserIndex);
 						System.out.println("Selected user: " + selectedUser.getUsername());
-						// Proceed with the application logic for the selected user by breaking out of the loop
+						// Proceed with the application logic for the selected user by breaking out of
+						// the loop
 						break;
 					} else {
 						TempConsoleUI.ErrorMessage("Invalid selection. Please try again.");
 					}
 				}
-				
-				// Proceed with the application logic for the selected user
-				// for now, just print the selected user's details
-				if (selectedUser != null) {
-					System.out.println("User Details:");
-					System.out.println("Username: " + selectedUser.getUsername());
-					System.out.println("Name: " + selectedUser.getName());
-					System.out.println("Date of Birth: " + selectedUser.getDob());
-					System.out.println("Weight: " + selectedUser.getWeight());
-				} else {
-					TempConsoleUI.ErrorMessage("No user selected.");
+
+				// Ask the user to enter their pin
+				while (true) {
+					// Clear the console and buffer
+					TempConsoleUI.ClearConsole();
+					TempConsoleUI.ClearBuffer();
+
+					// Display the user login screen
+					String pin = TempConsoleUI.UserPinLogin(selectedUser.getUsername());
+					if (pin != null) {
+						// Validate the pin
+						if (selectedUser.getPin().equals(pin)) {
+							System.out.println("PIN validated successfully.");
+							break; // Exit the loop if the PIN is valid
+						} else {
+							TempConsoleUI.ErrorMessage("Invalid PIN. Please try again.");
+						}
+					} else {
+						TempConsoleUI.ErrorMessage("Failed to validate PIN.");
+					}
 				}
+
+				// Set fitness goals
+				FitnessGoal fitnessGoal = TempConsoleUI.SetFitnessGoals();
+
+				if (fitnessGoal != null) {
+					selectedUser.setFitnessGoal(fitnessGoal);
+					System.out.println("Fitness goals set successfully.");
+				} else {
+					TempConsoleUI.ErrorMessage("Failed to set fitness goals.");
+				}
+
+				// Proceed with the application logic for the selected user
+				int choice = TempConsoleUI.UserMainMenu();
+
+				// Switch case for user choice
+				switch (choice) {
+					case 1:
+						// Log a workout
+						// TempConsoleUI.LogWorkout(selectedUser);
+						break;
+					case 2:
+						// Set fitness goals
+						// TempConsoleUI.SetFitnessGoals(selectedUser);
+						break;
+					case 3:
+						// View progress reports
+						// TempConsoleUI.ViewProgressReports(selectedUser);
+						break;
+					case 4:
+						// Exit the application
+						System.out.println("Exiting application.");
+						System.exit(0);
+					default:
+						TempConsoleUI.ErrorMessage("Invalid choice. Please try again.");
+				}
+
 			} else {
 				TempConsoleUI.ErrorMessage("Failed to load user data.");
 			}
 		} else {
-			// If the data file does not exist, proceed with first launch setup and create a new user and save the data
+			// If the data file does not exist, proceed with first launch setup and create a
+			// new user and save the data
 			System.out.println("No existing user data found. Starting first launch setup.");
 
 			// Display the first launch screen
@@ -138,7 +183,7 @@ public class SmartFitnessTrackerApplication {
 			// Create a new user
 			User FirstLaunchUser = TempConsoleUI.NewUserCreationScreen();
 			if (FirstLaunchUser != null) {
-				// Save the new user data to userList 
+				// Save the new user data to userList
 				userList.addUser(FirstLaunchUser);
 				// Save the user data to a file
 				AppData.SaveData.saveUserList(userList, filename);
