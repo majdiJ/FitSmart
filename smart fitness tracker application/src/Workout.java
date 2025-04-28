@@ -12,14 +12,16 @@ public class Workout implements Serializable {
     private String type; // e.g., running, cycling
     private int duration; // in minutes
     private int caloriesBurned;
+    private int steps; // Number of steps taken during the workout
     private LocalDateTime dateTime; // Date and time of the workout
     private String notes; // Optional notes for the workout
 
     // Constructor
-    public Workout(String type, int duration, int caloriesBurned, LocalDateTime dateTime, String notes) {
+    public Workout(String type, int duration, int caloriesBurned, int steps, LocalDateTime dateTime, String notes) {
         this.type = type;
         this.duration = duration;
         this.caloriesBurned = caloriesBurned;
+        this.steps = 0; // Default value, can be set later
         this.dateTime = dateTime;
         this.notes = notes;
     }
@@ -76,6 +78,17 @@ public class Workout implements Serializable {
             throw new IllegalArgumentException("Calories burned cannot be negative.");
         } else {
             this.caloriesBurned = caloriesBurned;
+        }
+    }
+
+    public int getSteps() {
+        return steps;
+    }
+    public void setSteps(int steps) {
+        if (steps < 0) {
+            throw new IllegalArgumentException("Steps cannot be negative.");
+        } else {
+            this.steps = steps;
         }
     }
 

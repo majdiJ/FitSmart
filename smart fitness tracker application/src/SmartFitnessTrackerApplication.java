@@ -46,13 +46,11 @@
 
 // Team Members:
 // - Majdi Jaigirdar (Student ID: 26192802) (GitHub: [majdi-jaigirdar](https://github.com/majdiJ))
-// - Jessica Livesley (Student ID: 25658654) (GitHub: [JessicaLivesley](...))
-// - Muhammad Fasih (Student ID: 25968823) (GitHub: [fasihmuhammad](...))
-// - Robert Fory (Student ID: 25760416) (GitHub: [robertfory](...))
+// - Jessica Livesley (Student ID: 25658654) (GitHub: [JessicaLivesley](https://github.com/JessLivesley))
+// - Muhammad Fasih (Student ID: 25968823) (GitHub: [fasihmuhammad](https://github.com/FazzyM)) 
+// - Robert Fory (Student ID: 25760416) (GitHub: [robertfory](https://github.com/...))
 
-// Import Librarie
-import java.util.List;
-import java.util.ArrayList;
+// Import Libraries
 
 public class SmartFitnessTrackerApplication {
 
@@ -211,7 +209,7 @@ public class SmartFitnessTrackerApplication {
 
 						case 6: // View progress report
 							TempConsoleUI.ClearConsole();
-							// TempConsoleUI.ViewProgressReport(selectedUser.getWorkouts(), selectedUser.getFitnessGoal());
+							TempConsoleUI.ViewProgressReport(selectedUser);
 							break;
 
 						case 8: // Log water intake

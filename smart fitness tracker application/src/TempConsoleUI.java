@@ -588,6 +588,22 @@ public class TempConsoleUI {
             }
         }
 
+        int steps = 0;
+
+        while (true) {
+            System.out.println("Please enter the number of steps taken:");
+            steps = scanner.nextInt();
+
+            // Validate the steps
+            if (steps < 0) {
+                ErrorMessage("Steps cannot be negative.");
+            } else {
+                SuccessMessage("Steps are valid.");
+                break; // Exit the loop if the steps are valid
+            }
+            
+        }
+
         // Get the current date and time
         LocalDateTime dateTime = LocalDateTime.now();
         // Ask the user if they want to use the current date and timw or enter a custom date and time
@@ -614,9 +630,11 @@ public class TempConsoleUI {
             }
         }
 
+        String notes = "";
+
         while (true) {
             System.out.println("Please enter any notes for the workout (optional):");
-            String notes = scanner.nextLine();
+            notes = scanner.nextLine();
 
             // Validate the notes
             if (notes == null || notes.isEmpty()) {
@@ -628,7 +646,7 @@ public class TempConsoleUI {
         }
 
         // Create a new Workout object with the entered details
-        Workout workout = new Workout(workoutType, duration, caloriesBurned, dateTime, null);
+        Workout workout = new Workout(workoutType, duration, caloriesBurned, steps, dateTime, notes);
         // Return the workout object to the main method
         return workout;
     }
@@ -637,12 +655,125 @@ public class TempConsoleUI {
     public static void ViewWorkoutHistory(Workout[] workoutHistory) {
         System.out.println("Workout History:");
         for (int i = 0; i < workoutHistory.length; i++) {
-            System.out.println((i + 1) + ". " + workoutHistory[i].getType() + " - " + workoutHistory[i].getDuration() + " minutes - " + workoutHistory[i].getCaloriesBurned() + " calories burned - " + workoutHistory[i].getDateTime());
+            System.out.println((i + 1) + ". " + workoutHistory[i].getType() + " - " + workoutHistory[i].getDuration() + " minutes - " + workoutHistory[i].getCaloriesBurned() + " calories burned - " + workoutHistory[i].getSteps() + " steps - " + workoutHistory[i].getDateTime());
         }
     }
 
     // View progress reports
-    public static void ViewProgressReports(User user) {
+    public static void ViewProgressReport(User user) {
+        System.out.println("Progress Report:");
+        System.out.println("--- Your Profile ---");
+        System.out.println("Username: " + user.getUsername());
+        System.out.println("Name: " + user.getName());
+        System.out.println("Date of Birth: " + user.getDob());
+        System.out.println("Weight: " + user.getWeight() + " kg");
+        System.out.println("--- Your Fitness Goals ---");
+        System.out.println("Daily Step Count: " + user.getFitnessGoal().getDailyStepCount());
+        System.out.println("Workout Duration: " + user.getFitnessGoal().getWorkoutDuration() + " minutes");
+        System.out.println("Calories Burned: " + user.getFitnessGoal().getCaloriesBurned());
+        System.out.println("Workouts Per Week: " + user.getFitnessGoal().getWorkoutsPerWeek());
+        System.out.println("Daily Water Intake: " + user.getFitnessGoal().getDailyWaterIntake() + " liters");
+        System.out.println("Sleep Minutes: " + user.getFitnessGoal().getsleepMinutes() + " minutes");
+        System.out.println("Weight Goal: " + user.getFitnessGoal().getWeightGoal() + " kg");
+        System.out.println("Strength Goal: " + user.getFitnessGoal().getStrength() + " kg");
+        System.out.println("--- Your Workout History ---");
+        for (int i = 0; i < user.getWorkouts().length; i++) {
+            System.out.println((i + 1) + ". " + user.getWorkouts()[i].getType() + " - " + user.getWorkouts()[i].getDuration() + " minutes - " + user.getWorkouts()[i].getCaloriesBurned() + " calories burned - " + user.getWorkouts()[i].getSteps() + " steps - " + user.getWorkouts()[i].getDateTime());
+        }
+        System.out.println("--- Your Water Intake History ---");
+        for (int i = 0; i < user.getWaterIntake().length; i++) {
+            System.out.println((i + 1) + ". " + user.getWaterIntake()[i].getAmount() + " liters - " + user.getWaterIntake()[i].getDateTime());
+        }
+        System.out.println("--- Your Sleep History ---");
+        for (int i = 0; i < user.getSleep().length; i++) {
+            System.out.println((i + 1) + ". " + user.getSleep()[i].getDuration() + " minutes - " + user.getSleep()[i].getDateTime());
+        }
+        System.out.println("--- Your Weight History ---");
+        for (int i = 0; i < user.getWeightRecords().length; i++) {
+            System.out.println((i + 1) + ". " + user.getWeightRecords()[i].getLogedWeight() + " kg - " + user.getWeightRecords()[i].getDateTime());
+        }
+        System.out.println("--- Your Fitness Goals ---");
+        System.out.println("Daily Step Count: " + user.getFitnessGoal().getDailyStepCount());
+        System.out.println("Workout Duration: " + user.getFitnessGoal().getWorkoutDuration() + " minutes");
+        System.out.println("Calories Burned: " + user.getFitnessGoal().getCaloriesBurned());
+        System.out.println("Workouts Per Week: " + user.getFitnessGoal().getWorkoutsPerWeek());
+        System.out.println("Daily Water Intake: " + user.getFitnessGoal().getDailyWaterIntake() + " liters");
+        System.out.println("Sleep Minutes: " + user.getFitnessGoal().getsleepMinutes() + " minutes");
+        System.out.println("Weight Goal: " + user.getFitnessGoal().getWeightGoal() + " kg");
+        // System.out.println("Strength Goal: " + user.getFitnessGoal().getStrength() + " kg");
+
+        System.out.println("\n\n--- Your Progress Report ---");
+        System.out.println("\n=== STEPS ===");
+        ProgressTracker progressTracker = new ProgressTracker();
+        System.out.println("Steps today: " + progressTracker.getStepsTakenInRange(user.getWorkouts(), LocalDateTime.now().minusDays(1), LocalDateTime.now()));
+        System.out.println("Steps this week: " + progressTracker.getStepsTakenInRange(user.getWorkouts(), LocalDateTime.now().minusDays(7), LocalDateTime.now()));
+        System.out.println("Steps this month: " + progressTracker.getStepsTakenInRange(user.getWorkouts(), LocalDateTime.now().minusDays(30), LocalDateTime.now()));
+        System.out.println("Steps this year: " + progressTracker.getStepsTakenInRange(user.getWorkouts(), LocalDateTime.now().minusDays(365), LocalDateTime.now()));
+        System.out.println("Average steps per day: " + progressTracker.getAverageStepsTakenInRange(user.getWorkouts(), LocalDateTime.now().minusDays(30), LocalDateTime.now()));
+        System.out.println("Average steps per week: " + progressTracker.getAverageStepsTakenInRange(user.getWorkouts(), LocalDateTime.now().minusDays(7), LocalDateTime.now()));
+        System.out.println("Average steps per month: " + progressTracker.getAverageStepsTakenInRange(user.getWorkouts(), LocalDateTime.now().minusDays(30), LocalDateTime.now()));
+        System.out.println("Average steps per year: " + progressTracker.getAverageStepsTakenInRange(user.getWorkouts(), LocalDateTime.now().minusDays(365), LocalDateTime.now()));
+        
+    System.out.println("\n=== NUMBER OF WORKOUTS ===");
+        System.out.println("Number of workouts today: " + progressTracker.getTotalWorkoutsInRange(user.getWorkouts(), LocalDateTime.now().minusDays(1), LocalDateTime.now()));
+        System.out.println("Number of workouts this week: " + progressTracker.getTotalWorkoutsInRange(user.getWorkouts(), LocalDateTime.now().minusDays(7), LocalDateTime.now()));
+        System.out.println("Number of workouts this month: " + progressTracker.getTotalWorkoutsInRange(user.getWorkouts(), LocalDateTime.now().minusDays(30), LocalDateTime.now()));
+        System.out.println("Number of workouts this year: " + progressTracker.getTotalWorkoutsInRange(user.getWorkouts(), LocalDateTime.now().minusDays(365), LocalDateTime.now()));
+        System.out.println("Average workouts per day: " + progressTracker.getAverageWorkoutsInRange(user.getWorkouts(), LocalDateTime.now().minusDays(30), LocalDateTime.now()));
+        System.out.println("Average workouts per week: " + progressTracker.getAverageWorkoutsInRange(user.getWorkouts(), LocalDateTime.now().minusDays(7), LocalDateTime.now()));
+        System.out.println("Average workouts per month: " + progressTracker.getAverageWorkoutsInRange(user.getWorkouts(), LocalDateTime.now().minusDays(30), LocalDateTime.now()));
+        System.out.println("Average workouts per year: " + progressTracker.getAverageWorkoutsInRange(user.getWorkouts(), LocalDateTime.now().minusDays(365), LocalDateTime.now()));
+        
+        System.out.println("\n=== WORKOUTS DURATION ===");
+        System.out.println("Workout duration today: " + progressTracker.getTotalWorkoutDurationInRange(user.getWorkouts(), LocalDateTime.now().minusDays(1), LocalDateTime.now()) + " minutes");
+        System.out.println("Workout duration this week: " + progressTracker.getTotalWorkoutDurationInRange(user.getWorkouts(), LocalDateTime.now().minusDays(7), LocalDateTime.now()) + " minutes");
+        System.out.println("Workout duration this month: " + progressTracker.getTotalWorkoutDurationInRange(user.getWorkouts(), LocalDateTime.now().minusDays(30), LocalDateTime.now()) + " minutes");
+        System.out.println("Workout duration this year: " + progressTracker.getTotalWorkoutDurationInRange(user.getWorkouts(), LocalDateTime.now().minusDays(365), LocalDateTime.now()) + " minutes");
+        System.out.println("Average workout duration per day: " + progressTracker.getAverageWorkoutDurationInRange(user.getWorkouts(), LocalDateTime.now().minusDays(30), LocalDateTime.now()) + " minutes");
+        System.out.println("Average workout duration per week: " + progressTracker.getAverageWorkoutDurationInRange(user.getWorkouts(), LocalDateTime.now().minusDays(7), LocalDateTime.now()) + " minutes");
+        System.out.println("Average workout duration per month: " + progressTracker.getAverageWorkoutDurationInRange(user.getWorkouts(), LocalDateTime.now().minusDays(30), LocalDateTime.now()) + " minutes");
+        System.out.println("Average workout duration per year: " + progressTracker.getAverageWorkoutDurationInRange(user.getWorkouts(), LocalDateTime.now().minusDays(365), LocalDateTime.now()) + " minutes");
+        
+        System.out.println("\n=== CALORIES BURNED ===");
+        System.out.println("Calories burned today: " + progressTracker.getTotalCaloriesBurnedInRange(user.getWorkouts(), LocalDateTime.now().minusDays(1), LocalDateTime.now()) + " calories");
+        System.out.println("Calories burned this week: " + progressTracker.getTotalCaloriesBurnedInRange(user.getWorkouts(), LocalDateTime.now().minusDays(7), LocalDateTime.now()) + " calories");
+        System.out.println("Calories burned this month: " + progressTracker.getTotalCaloriesBurnedInRange(user.getWorkouts(), LocalDateTime.now().minusDays(30), LocalDateTime.now()) + " calories");
+        System.out.println("Calories burned this year: " + progressTracker.getTotalCaloriesBurnedInRange(user.getWorkouts(), LocalDateTime.now().minusDays(365), LocalDateTime.now()) + " calories");
+        System.out.println("Average calories burned per day: " + progressTracker.getAverageCaloriesBurnedInRange(user.getWorkouts(), LocalDateTime.now().minusDays(30), LocalDateTime.now()) + " calories");
+        System.out.println("Average calories burned per week: " + progressTracker.getAverageCaloriesBurnedInRange(user.getWorkouts(), LocalDateTime.now().minusDays(7), LocalDateTime.now()) + " calories");
+        System.out.println("Average calories burned per month: " + progressTracker.getAverageCaloriesBurnedInRange(user.getWorkouts(), LocalDateTime.now().minusDays(30), LocalDateTime.now()) + " calories");
+        System.out.println("Average calories burned per year: " + progressTracker.getAverageCaloriesBurnedInRange(user.getWorkouts(), LocalDateTime.now().minusDays(365), LocalDateTime.now()) + " calories");
+        
+        System.out.println("\n=== WEIGHT ===");
+        System.out.println("Average weight today: " + progressTracker.getAverageWeightInRange(user.getWeightRecords(), LocalDateTime.now().minusDays(1), LocalDateTime.now()) + " kg");
+        System.out.println("Average weight this week: " + progressTracker.getAverageWeightInRange(user.getWeightRecords(), LocalDateTime.now().minusDays(7), LocalDateTime.now()) + " kg");
+        System.out.println("Average weight this month: " + progressTracker.getAverageWeightInRange(user.getWeightRecords(), LocalDateTime.now().minusDays(30), LocalDateTime.now()) + " kg");
+        System.out.println("Average weight this year: " + progressTracker.getAverageWeightInRange(user.getWeightRecords(), LocalDateTime.now().minusDays(365), LocalDateTime.now()) + " kg");
+        System.out.println("Weight change this week: " + progressTracker.getWeightChangeInRange(user.getWeightRecords(), LocalDateTime.now().minusDays(7), LocalDateTime.now()) + " kg");
+        System.out.println("Weight change this month: " + progressTracker.getWeightChangeInRange(user.getWeightRecords(), LocalDateTime.now().minusDays(30), LocalDateTime.now()) + " kg");
+        System.out.println("Weight change this year: " + progressTracker.getWeightChangeInRange(user.getWeightRecords(), LocalDateTime.now().minusDays(365), LocalDateTime.now()) + " kg");
+
+        System.out.println("\n=== WATER INTAKE ===");
+        System.out.println("Water intake today: " + progressTracker.getWaterIntakeInRange(user.getWaterIntake(), LocalDateTime.now().minusDays(1), LocalDateTime.now()) + " liters");
+        System.out.println("Water intake this week: " + progressTracker.getWaterIntakeInRange(user.getWaterIntake(), LocalDateTime.now().minusDays(7), LocalDateTime.now()) + " liters");
+        System.out.println("Water intake this month: " + progressTracker.getWaterIntakeInRange(user.getWaterIntake(), LocalDateTime.now().minusDays(30), LocalDateTime.now()) + " liters");
+        System.out.println("Water intake this year: " + progressTracker.getWaterIntakeInRange(user.getWaterIntake(), LocalDateTime.now().minusDays(365), LocalDateTime.now()) + " liters");
+        System.out.println("Average water intake per day: " + progressTracker.getAverageWaterIntakeInRange(user.getWaterIntake(), LocalDateTime.now().minusDays(30), LocalDateTime.now()) + " liters");
+        System.out.println("Average water intake per week: " + progressTracker.getAverageWaterIntakeInRange(user.getWaterIntake(), LocalDateTime.now().minusDays(7), LocalDateTime.now()) + " liters");
+        System.out.println("Average water intake per month: " + progressTracker.getAverageWaterIntakeInRange(user.getWaterIntake(), LocalDateTime.now().minusDays(30), LocalDateTime.now()) + " liters");
+        System.out.println("Average water intake per year: " + progressTracker.getAverageWaterIntakeInRange(user.getWaterIntake(), LocalDateTime.now().minusDays(365), LocalDateTime.now()) + " liters");
+        
+        System.out.println("\n=== SLEEP ===");
+        System.out.println("Sleep today: " + progressTracker.getTotalSleepMinutesInRange(user.getSleep(), LocalDateTime.now().minusDays(1), LocalDateTime.now()) + " minutes");
+        System.out.println("Sleep this week: " + progressTracker.getTotalSleepMinutesInRange(user.getSleep(), LocalDateTime.now().minusDays(7), LocalDateTime.now()) + " minutes");
+        System.out.println("Sleep this month: " + progressTracker.getTotalSleepMinutesInRange(user.getSleep(), LocalDateTime.now().minusDays(30), LocalDateTime.now()) + " minutes");
+        System.out.println("Sleep this year: " + progressTracker.getTotalSleepMinutesInRange(user.getSleep(), LocalDateTime.now().minusDays(365), LocalDateTime.now()) + " minutes");
+        System.out.println("Average sleep per day: " + progressTracker.getAverageSleepMinutesInRange(user.getSleep(), LocalDateTime.now().minusDays(30), LocalDateTime.now()) + " minutes");
+        System.out.println("Average sleep per week: " + progressTracker.getAverageSleepMinutesInRange(user.getSleep(), LocalDateTime.now().minusDays(7), LocalDateTime.now()) + " minutes");
+        System.out.println("Average sleep per month: " + progressTracker.getAverageSleepMinutesInRange(user.getSleep(), LocalDateTime.now().minusDays(30), LocalDateTime.now()) + " minutes");
+        System.out.println("Average sleep per year: " + progressTracker.getAverageSleepMinutesInRange(user.getSleep(), LocalDateTime.now().minusDays(365), LocalDateTime.now()) + " minutes");
+
+        // Add more details as needed
     }
 
     // Log water intake
