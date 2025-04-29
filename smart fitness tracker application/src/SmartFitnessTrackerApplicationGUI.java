@@ -210,7 +210,7 @@ public class SmartFitnessTrackerApplicationGUI {
 
 							case 4: // Log workout
 								TempConsoleUI.ClearConsole();
-								Workout workout = TempConsoleUI.LogWorkout();
+								Workout workout = GUI.LogWorkout();
 								if (workout != null) {
 									selectedUser.addWorkout(workout);
 									System.out.println("Workout logged successfully.");
