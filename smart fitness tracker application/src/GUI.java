@@ -594,7 +594,127 @@ public class GUI {
     }
     
     // Make GUI for user dashboard
+    public static void UserDashboard(User user) {
+        JFrame frame = new JFrame("User Dashboard - " + user.getUsername());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(800, 600);
+        frame.setLayout(new BorderLayout());
+        frame.setLocationRelativeTo(null);
 
+        // Welcome panel
+        JPanel welcomePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel welcomeLabel = new JLabel("Welcome, " + user.getName() + "!");
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        welcomePanel.add(welcomeLabel);
+        frame.add(welcomePanel, BorderLayout.NORTH);
+
+        // Main options panel
+        JPanel optionsPanel = new JPanel(new GridLayout(4, 3, 10, 10));
+        optionsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // Create buttons for each option
+        JButton viewProfileButton = new JButton("View Profile");
+        JButton setGoalsButton = new JButton("Set Fitness Goals");
+        JButton viewGoalsButton = new JButton("View Fitness Goals");
+        JButton logWorkoutButton = new JButton("Log Workout");
+        JButton workoutHistoryButton = new JButton("Workout History");
+        JButton progressReportButton = new JButton("Progress Report");
+        JButton logWaterButton = new JButton("Log Water Intake");
+        JButton logSleepButton = new JButton("Log Sleep");
+        JButton logWeightButton = new JButton("Log Weight");
+        JButton viewHistoryButton = new JButton("View Health History");
+        JButton exitButton = new JButton("Exit");
+
+        // Add buttons to panel
+        optionsPanel.add(viewProfileButton);
+        optionsPanel.add(setGoalsButton);
+        optionsPanel.add(viewGoalsButton);
+        optionsPanel.add(logWorkoutButton);
+        optionsPanel.add(workoutHistoryButton);
+        optionsPanel.add(progressReportButton);
+        optionsPanel.add(logWaterButton);
+        optionsPanel.add(logSleepButton);
+        optionsPanel.add(logWeightButton);
+        optionsPanel.add(viewHistoryButton);
+        optionsPanel.add(exitButton);
+
+        frame.add(optionsPanel, BorderLayout.CENTER);
+
+        // Button actions
+        viewProfileButton.addActionListener(e -> {
+            ViewUserProfile(user);
+        });
+
+        setGoalsButton.addActionListener(e -> {
+            FitnessGoal goals = SetFitnessGoals();
+            if (goals != null) {
+                user.setFitnessGoal(goals);
+                AppData.SaveData.saveUserList(userList, "userData.dat");
+                JOptionPane.showMessageDialog(frame, "Goals updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        viewGoalsButton.addActionListener(e -> {
+            ViewFitnessGoals(user.getFitnessGoal());
+        });
+
+        logWorkoutButton.addActionListener(e -> {
+            Workout workout = LogWorkout();
+            if (workout != null) {
+                user.addWorkout(workout);
+                AppData.SaveData.saveUserList(userList, "userData.dat");
+                JOptionPane.showMessageDialog(frame, "Workout logged successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        workoutHistoryButton.addActionListener(e -> {
+            ViewWorkoutHistory(user.getWorkouts());
+        });
+
+        progressReportButton.addActionListener(e -> {
+            ViewProgressReport(user);
+        });
+
+        logWaterButton.addActionListener(e -> {
+            Water water = LogWaterIntake();
+            if (water != null) {
+                user.addWaterIntake(water);
+                AppData.SaveData.saveUserList(userList, "userData.dat");
+                JOptionPane.showMessageDialog(frame, "Water intake logged successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        logSleepButton.addActionListener(e -> {
+            Sleep sleep = LogSleep();
+            if (sleep != null) {
+                user.addSleep(sleep);
+                AppData.SaveData.saveUserList(userList, "userData.dat");
+                JOptionPane.showMessageDialog(frame, "Sleep logged successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        logWeightButton.addActionListener(e -> {
+            Weight weight = LogWeight();
+            if (weight != null) {
+                user.addWeightRecord(weight);
+                AppData.SaveData.saveUserList(userList, "userData.dat");
+                JOptionPane.showMessageDialog(frame, "Weight logged successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        viewHistoryButton.addActionListener(e -> {
+            ViewHealthHistory(user);
+        });
+
+        exitButton.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(frame, "Are you sure you want to exit?", "Confirm Exit", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                frame.dispose();
+            }
+        });
+
+        frame.setVisible(true);
+    }
     // Make GUI to show users profile
 
     // Make GUI for user to log their workout
