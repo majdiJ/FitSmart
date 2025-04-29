@@ -1063,8 +1063,79 @@ public class GUI {
         return weightResult[0];
     }
 
-
     // Make GUI to show users fitness goals
+   public static void ViewFitnessGoals(FitnessGoal goals) {
+        JFrame frame = new JFrame("Fitness Goals");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(500, 400);
+        frame.setLayout(new GridBagLayout());
+        frame.setLocationRelativeTo(null);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+        // Add goals information
+        frame.add(new JLabel("Daily Step Count:"), gbc);
+        gbc.gridx = 1;
+        frame.add(new JLabel(String.valueOf(goals.getDailyStepCount())), gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        frame.add(new JLabel("Workout Duration (minutes):"), gbc);
+        gbc.gridx = 1;
+        frame.add(new JLabel(String.valueOf(goals.getWorkoutDuration())), gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        frame.add(new JLabel("Calories Burned:"), gbc);
+        gbc.gridx = 1;
+        frame.add(new JLabel(String.valueOf(goals.getCaloriesBurned())), gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        frame.add(new JLabel("Workouts Per Week:"), gbc);
+        gbc.gridx = 1;
+        frame.add(new JLabel(String.valueOf(goals.getWorkoutsPerWeek())), gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        frame.add(new JLabel("Daily Water Intake (liters):"), gbc);
+        gbc.gridx = 1;
+        frame.add(new JLabel(String.valueOf(goals.getDailyWaterIntake())), gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        frame.add(new JLabel("Sleep Minutes:"), gbc);
+        gbc.gridx = 1;
+        frame.add(new JLabel(String.valueOf(goals.getsleepMinutes())), gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        frame.add(new JLabel("Weight Goal (kg):"), gbc);
+        gbc.gridx = 1;
+        frame.add(new JLabel(String.valueOf(goals.getWeightGoal())), gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        frame.add(new JLabel("Strength Goal (kg):"), gbc);
+        gbc.gridx = 1;
+        frame.add(new JLabel(String.valueOf(goals.getStrength())), gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        // Close button
+        JButton closeButton = new JButton("Close");
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        frame.add(closeButton, gbc);
+
+        closeButton.addActionListener(e -> frame.dispose());
+
+        frame.setVisible(true);
+    } 
 
     // Make GUI to show users workout history
 
