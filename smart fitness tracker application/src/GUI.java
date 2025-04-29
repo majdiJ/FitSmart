@@ -1335,8 +1335,52 @@ public class GUI {
         frame.setVisible(true);
     }
 
-
     // Make GUI to show users sleep history
+    public static void ViewSleepHistory(User user) {
+        JFrame frame = new JFrame("Sleep History");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(800, 400);
+        frame.setLocationRelativeTo(null);
+
+        if (user.getSleep() == null || user.getSleep().length == 0) {
+            JOptionPane.showMessageDialog(frame, 
+                "No sleep history available.", 
+                "Information", 
+                JOptionPane.INFORMATION_MESSAGE);
+            frame.dispose();
+            return;
+        }
+
+        // Create column names
+        String[] columnNames = {"Date/Time", "Duration (minutes)", "Notes"};
+
+        // Create data
+        Object[][] data = new Object[user.getSleep().length][3];
+        for (int i = 0; i < user.getSleep().length; i++) {
+            data[i][0] = user.getSleep()[i].getDateTime().toString();
+            data[i][1] = user.getSleep()[i].getDuration();
+            data[i][2] = user.getSleep()[i].getNotes();
+        }
+
+        // Create table
+        JTable table = new JTable(data, columnNames);
+        table.setFillsViewportHeight(true);
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        // Add components
+        frame.add(scrollPane, BorderLayout.CENTER);
+
+        // Close button
+        JButton closeButton = new JButton("Close");
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(closeButton);
+        frame.add(buttonPanel, BorderLayout.SOUTH);
+
+        closeButton.addActionListener(e -> frame.dispose());
+
+        frame.setVisible(true);
+    }
+
 
     // Make GUI to show users weight history
 
