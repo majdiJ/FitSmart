@@ -977,6 +977,92 @@ public class GUI {
     }
 
     // Make GUI for user to log their weight
+    public static Weight LogWeight() {
+        JFrame frame = new JFrame("Log Weight");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.setLayout(new GridBagLayout());
+        frame.setLocationRelativeTo(null);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Weight
+        JLabel weightLabel = new JLabel("Weight (kg):");
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        frame.add(weightLabel, gbc);
+
+        JTextField weightField = new JTextField(10);
+        gbc.gridx = 1;
+        frame.add(weightField, gbc);
+
+        // Notes
+        JLabel notesLabel = new JLabel("Notes:");
+        gbc.gridx = 0;
+        gbc.gridy++;
+        frame.add(notesLabel, gbc);
+
+        JTextArea notesArea = new JTextArea(3, 20);
+        JScrollPane notesScroll = new JScrollPane(notesArea);
+        gbc.gridx = 1;
+        frame.add(notesScroll, gbc);
+
+        // Date/time
+        JLabel dateLabel = new JLabel("Date/Time:");
+        gbc.gridx = 0;
+        gbc.gridy++;
+        frame.add(dateLabel, gbc);
+
+        JTextField dateField = new JTextField(LocalDateTime.now().toString());
+        gbc.gridx = 1;
+        frame.add(dateField, gbc);
+
+        // Buttons
+        JButton submitButton = new JButton("Submit");
+        gbc.gridx = 0;
+        gbc.gridy++;
+        frame.add(submitButton, gbc);
+
+        JButton cancelButton = new JButton("Cancel");
+        gbc.gridx = 1;
+        frame.add(cancelButton, gbc);
+
+        final Weight[] weightResult = {null};
+
+        submitButton.addActionListener(e -> {
+            try {
+                double weight = Double.parseDouble(weightField.getText());
+                String notes = notesArea.getText();
+                LocalDateTime dateTime = LocalDateTime.parse(dateField.getText());
+
+                weightResult[0] = new Weight(weight, dateTime, notes);
+                JOptionPane.showMessageDialog(frame, "Weight logged successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                frame.dispose();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(frame, "Please enter a valid number for weight.", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frame, "Invalid date/time format. Please use the format shown.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        cancelButton.addActionListener(e -> frame.dispose());
+
+        frame.setVisible(true);
+
+        // Wait until frame is closed
+        while (weightResult[0] == null && frame.isDisplayable()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return weightResult[0];
+    }
+
 
     // Make GUI to show users fitness goals
 
