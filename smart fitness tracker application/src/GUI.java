@@ -15,21 +15,21 @@ public class GUI {
     // Splash screen for first launch
     public static boolean WelcomeSplashScreen() {
         JFrame frame = new JFrame("Welcome to FitSmart");
-            // Load icon from resources
-            URL iconURL = GUI.class.getResource("/Images/logo.png");
-            if (iconURL != null) {
-                Image icon = Toolkit.getDefaultToolkit().getImage(iconURL);
-                frame.setIconImage(icon);
-            } else {
-                System.err.println("Icon not found");
-            }
+        URL iconURL = GUI.class.getResource("/Images/logo.png");
+
+        // Load icon from resources
+        if (iconURL != null) {
+            Image icon = Toolkit.getDefaultToolkit().getImage(iconURL);
+            frame.setIconImage(icon);
+        } else {
+            System.err.println("Icon not found");
+        }
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(900, 700);
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(null);
     
         // Load logo
-        URL iconURL = GUI.class.getResource("/Images/logo.png");
         JLabel logoLabel = new JLabel();
         if (iconURL != null) {
             ImageIcon logoIcon = new ImageIcon(iconURL);
