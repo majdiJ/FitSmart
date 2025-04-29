@@ -177,13 +177,16 @@ public class SmartFitnessTrackerApplicationGUI {
 					while (true) {
 
 						// Proceed with the application logic for the selected user
-						int choice = TempConsoleUI.UserMainMenu();
+						int choice = GUI.UserMainMenu(selectedUser);
 
 						// Switch case for user choice
 						switch (choice) {
 							case 1: // View profile
 								TempConsoleUI.ClearConsole();
-								TempConsoleUI.ViewUserProfile(selectedUser);
+								Boolean UserReturnToMainMenu = GUI.ViewUserProfile(selectedUser);
+								if (UserReturnToMainMenu) {
+									break; // Return to main menu
+								}
 								break;
 
 							case 2: // Set fitness goals

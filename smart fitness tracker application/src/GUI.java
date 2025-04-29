@@ -6,6 +6,8 @@ import java.awt.*;
 import java.time.LocalDateTime;
 import java.net.URL;
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class GUI {
 
@@ -595,106 +597,76 @@ public class GUI {
     
     // Make GUI for user dashboard
     public static int UserMainMenu(User user) {
-        JDialog dialog = new JDialog();
-        dialog.setModal(true);
-        dialog.setTitle("FitSmart Dashboard");
-        dialog.setSize(1000, 800);
-        dialog.setLayout(new BorderLayout(10, 10));
-        dialog.setLocationRelativeTo(null);
-
-        // Metrics panel
-        JPanel metricsPanel = new JPanel(new GridLayout(1, 5, 10, 10));
-        metricsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        ProgressTracker tracker = new ProgressTracker();
-        LocalDateTime now = LocalDateTime.now();
-
-        // Calculate metrics
-        addMetric(metricsPanel, "Steps Today", 
-            tracker.getStepsTakenInRange(user.getWorkouts(), now.minusDays(1), now) + " steps");
-        addMetric(metricsPanel, "Weekly Workouts", 
-            tracker.getTotalWorkoutsInRange(user.getWorkouts(), now.minusWeeks(1), now) + " workouts");
-        addMetric(metricsPanel, "Current Weight", 
-            getCurrentWeight(user) + " kg");
-        addMetric(metricsPanel, "Water Today", 
-            tracker.getWaterIntakeInRange(user.getWaterIntake(), now.minusDays(1), now) + " L");
-        addMetric(metricsPanel, "Last Sleep", 
-            getLastSleepDuration(user) + " mins");
-
-        dialog.add(metricsPanel, BorderLayout.NORTH);
-
-        // Button panel
-        JPanel buttonPanel = new JPanel(new GridLayout(4, 3, 10, 10));
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        String[] buttonLabels = {
-            "View Profile", "Set Goals", "View Goals",
-            "Log Workout", "Workout History", "Progress Reports",
-            "Log Water", "Log Sleep", "Log Weight",
-            "View History", "Exit", ""
-        };
-
-        int[] choices = {1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, -1};
-
-        for (int i = 0; i < buttonLabels.length; i++) {
-            if (choices[i] == -1) {
-                buttonPanel.add(new JLabel());
-                continue;
-            }
-            
-            JButton btn = new JButton("<html><center>" + buttonLabels[i] + "</center></html>");
-            btn.setPreferredSize(new Dimension(200, 80));
-            final int choice = choices[i];
-            
-            btn.addActionListener(e -> {
-                dialog.dispose();
-                returnChoice[0] = choice;
-            });
-            
-            buttonPanel.add(btn);
-        }
-
-        dialog.add(new JScrollPane(buttonPanel), BorderLayout.CENTER);
-
-        final int[] returnChoice = {0};
-        dialog.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                returnChoice[0] = 12; // Exit if window closed
-            }
-        });
-
-        dialog.setVisible(true);
-        return returnChoice[0];
-    }
-
-    private static void addMetric(JPanel panel, String title, String value) {
-        JPanel metric = new JPanel(new BorderLayout());
-        metric.setBorder(BorderFactory.createTitledBorder(title));
-        JLabel label = new JLabel(value, SwingConstants.CENTER);
-        label.setFont(new Font("Arial", Font.BOLD, 16));
-        metric.add(label);
-        panel.add(metric);
-    }
-
-    private static String getCurrentWeight(User user) {
-        Weight[] weights = user.getWeightRecords();
-        if (weights != null && weights.length > 0) {
-            return String.format("%.1f", weights[weights.length - 1].getLogedWeight());
-        }
-        return String.format("%.1f", user.getWeight());
-    }
-
-    private static String getLastSleepDuration(User user) {
-        Sleep[] sleeps = user.getSleep();
-        if (sleeps != null && sleeps.length > 0) {
-            return String.valueOf(sleeps[sleeps.length - 1].getDuration());
-        }
-        return "0";
-    }
+            JDialog dialog = new JDialog();
+            dialog.setModal(true);
+            dialog.setTitle("FitSmart Dashboard");
+            dialog.setSize(1000, 800);
+            dialog.setLayout(new BorderLayout(10, 10));
+            dialog.setLocationRelativeTo(null);
     
+            // Declare returnChoice BEFORE creating buttons
+            final int[] returnChoice = {0};
+    
+            // ... rest of the metrics panel code ...
+    
+            // Button panel
+            JPanel buttonPanel = new JPanel(new GridLayout(4, 3, 10, 10));
+            buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+    
+            String[] buttonLabels = {
+                "View Profile", "Set Goals", "View Goals",
+                "Log Workout", "Workout History", "Progress Reports",
+                "Log Water", "Log Sleep", "Log Weight",
+                "View History", "Exit", ""
+            };
+    
+            int[] choices = {1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, -1};
+    
+            for (int i = 0; i < buttonLabels.length; i++) {
+                if (choices[i] == -1) {
+                    buttonPanel.add(new JLabel());
+                    continue;
+                }
+                
+                JButton btn = new JButton("<html><center>" + buttonLabels[i] + "</center></html>");
+                btn.setPreferredSize(new Dimension(200, 80));
+                final int choice = choices[i];
+                
+                btn.addActionListener(e -> {
+                    dialog.dispose();
+                    returnChoice[0] = choice;
+                });
+                
+                buttonPanel.add(btn);
+            }
+    
+            dialog.add(new JScrollPane(buttonPanel), BorderLayout.CENTER);
+    
+            // Window listener
+            dialog.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    returnChoice[0] = 12; // Exit if window closed
+                    dialog.dispose();
+                }
+            });
+    
+            dialog.setVisible(true);
+            
+            // Wait for dialog to close
+            while (dialog.isVisible()) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            
+            return returnChoice[0];
+        }
+
     // Make GUI to show users profile
-    public static void ViewUserProfile(User user) {
+    public static boolean ViewUserProfile(User user) {
         JFrame frame = new JFrame("User Profile - " + user.getUsername());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(500, 400);
@@ -732,15 +704,31 @@ public class GUI {
         gbc.gridx = 0;
         gbc.gridy++;
 
-        // Close button
-        JButton closeButton = new JButton("Close");
+        // Buttons
+        JButton backButton = new JButton("Back");
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
-        frame.add(closeButton, gbc);
+        frame.add(backButton, gbc);
 
-        closeButton.addActionListener(e -> frame.dispose());
+        final boolean[] goBack = {false};
+
+        backButton.addActionListener(e -> {
+            goBack[0] = true;
+            frame.dispose();
+        });
 
         frame.setVisible(true);
+
+        // Wait for the user to close the frame
+        while (frame.isDisplayable()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return goBack[0];
     }
 
     // Make GUI for user to log their workout
@@ -1358,7 +1346,6 @@ public class GUI {
         frame.setVisible(true);
     }
 
-
     // Make GUI to show users weight history
     public static void ViewWeightHistory(User user) {
 
@@ -1410,11 +1397,9 @@ public class GUI {
         closeButton.addActionListener(e -> frame.dispose());
     
         frame.setVisible(true);
+    }
     
-    
-
-    // Make GUI to show users progress reports
-    
+    // Make GUI to show users progress reports    
     public static void ViewProgressReport(User user) {
         JFrame frame = new JFrame("Progress Report - " + user.getUsername());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
