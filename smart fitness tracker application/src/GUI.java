@@ -1144,7 +1144,7 @@ public class GUI {
     }
 
     // Make GUI to show users fitness goals
-   public static void ViewFitnessGoals(FitnessGoal goals) {
+    public static boolean ViewFitnessGoals(FitnessGoal goals) {
         JFrame frame = new JFrame("Fitness Goals");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(500, 400);
@@ -1206,17 +1206,32 @@ public class GUI {
         gbc.gridx = 0;
         gbc.gridy++;
 
-        // Close button
-        JButton closeButton = new JButton("Close");
+        // Back button
+        JButton backButton = new JButton("Back");
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
-        frame.add(closeButton, gbc);
+        frame.add(backButton, gbc);
 
-        closeButton.addActionListener(e -> frame.dispose());
+        final boolean[] goBack = {false};
+
+        backButton.addActionListener(e -> {
+            goBack[0] = true;
+            frame.dispose();
+        });
 
         frame.setVisible(true);
-    } 
 
+        // Wait for the user to close the frame
+        while (frame.isDisplayable()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return goBack[0];
+    }
     // Make GUI to show users workout history
     public static void ViewWorkoutHistory(Workout[] workouts) {
         JFrame frame = new JFrame("Workout History");
