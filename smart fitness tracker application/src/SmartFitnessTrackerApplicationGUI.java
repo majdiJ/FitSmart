@@ -205,7 +205,10 @@ public class SmartFitnessTrackerApplicationGUI {
 
 							case 3: // View fitness goals
 								TempConsoleUI.ClearConsole();
-								TempConsoleUI.ViewFitnessGoals(selectedUser.getFitnessGoal());
+								Boolean UserBack = GUI.ViewFitnessGoals(selectedUser.getFitnessGoal());
+								if (UserBack) {
+									break; // Return to main menu
+								}
 								break;
 
 							case 4: // Log workout
