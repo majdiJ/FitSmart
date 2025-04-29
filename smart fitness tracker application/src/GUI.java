@@ -1138,6 +1138,50 @@ public class GUI {
     } 
 
     // Make GUI to show users workout history
+    public static void ViewWorkoutHistory(Workout[] workouts) {
+        JFrame frame = new JFrame("Workout History");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+
+        if (workouts == null || workouts.length == 0) {
+            JOptionPane.showMessageDialog(frame, "No workout history available.", "Information", JOptionPane.INFORMATION_MESSAGE);
+            frame.dispose();
+            return;
+        }
+
+        // Create column names
+        String[] columnNames = {"Date", "Type", "Duration (min)", "Calories", "Steps", "Notes"};
+
+        // Create data
+        Object[][] data = new Object[workouts.length][6];
+        for (int i = 0; i < workouts.length; i++) {
+            data[i][0] = workouts[i].getDateTime().toString();
+            data[i][1] = workouts[i].getType();
+            data[i][2] = workouts[i].getDuration();
+            data[i][3] = workouts[i].getCaloriesBurned();
+            data[i][4] = workouts[i].getSteps();
+            data[i][5] = workouts[i].getNotes();
+        }
+
+        // Create table
+        JTable table = new JTable(data, columnNames);
+        table.setFillsViewportHeight(true);
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        frame.add(scrollPane, BorderLayout.CENTER);
+
+        // Close button
+        JButton closeButton = new JButton("Close");
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(closeButton);
+        frame.add(buttonPanel, BorderLayout.SOUTH);
+
+        closeButton.addActionListener(e -> frame.dispose());
+
+        frame.setVisible(true);
+    }
+
 
     // Make GUI to show users water intake history
 
