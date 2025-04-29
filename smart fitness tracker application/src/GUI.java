@@ -1290,6 +1290,50 @@ public class GUI {
     }
 
     // Make GUI to show users water intake history
+    public static void ViewWaterIntakeHistory(User user) {
+        JFrame frame = new JFrame("Water Intake History");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(800, 400);
+        frame.setLocationRelativeTo(null);
+
+        if (user.getWaterIntake() == null || user.getWaterIntake().length == 0) {
+            JOptionPane.showMessageDialog(frame, 
+                "No water intake history available.", 
+                "Information", 
+                JOptionPane.INFORMATION_MESSAGE);
+            frame.dispose();
+            return;
+        }
+
+        // Create column names
+        String[] columnNames = {"Date/Time", "Amount (liters)", "Notes"};
+
+        // Create data
+        Object[][] data = new Object[user.getWaterIntake().length][3];
+        for (int i = 0; i < user.getWaterIntake().length; i++) {
+            data[i][0] = user.getWaterIntake()[i].getDateTime().toString();
+            data[i][1] = user.getWaterIntake()[i].getAmount();
+            data[i][2] = user.getWaterIntake()[i].getNotes();
+        }
+
+        // Create table
+        JTable table = new JTable(data, columnNames);
+        table.setFillsViewportHeight(true);
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        // Add components
+        frame.add(scrollPane, BorderLayout.CENTER);
+
+        // Close button
+        JButton closeButton = new JButton("Close");
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(closeButton);
+        frame.add(buttonPanel, BorderLayout.SOUTH);
+
+        closeButton.addActionListener(e -> frame.dispose());
+
+        frame.setVisible(true);
+    }
 
 
     // Make GUI to show users sleep history
