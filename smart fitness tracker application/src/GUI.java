@@ -715,7 +715,57 @@ public class GUI {
 
         frame.setVisible(true);
     }
+    
     // Make GUI to show users profile
+    public static void ViewUserProfile(User user) {
+        JFrame frame = new JFrame("User Profile - " + user.getUsername());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(500, 400);
+        frame.setLayout(new GridBagLayout());
+        frame.setLocationRelativeTo(null);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+        // Add profile information
+        frame.add(new JLabel("Username:"), gbc);
+        gbc.gridx = 1;
+        frame.add(new JLabel(user.getUsername()), gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        frame.add(new JLabel("Name:"), gbc);
+        gbc.gridx = 1;
+        frame.add(new JLabel(user.getName()), gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        frame.add(new JLabel("Date of Birth:"), gbc);
+        gbc.gridx = 1;
+        frame.add(new JLabel(user.getDob().toString()), gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        frame.add(new JLabel("Weight:"), gbc);
+        gbc.gridx = 1;
+        frame.add(new JLabel(user.getWeight() + " kg"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        // Close button
+        JButton closeButton = new JButton("Close");
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        frame.add(closeButton, gbc);
+
+        closeButton.addActionListener(e -> frame.dispose());
+
+        frame.setVisible(true);
+    }
+
 
     // Make GUI for user to log their workout
 
