@@ -52,7 +52,7 @@
 
 // Import Libraries
 
-public class SmartFitnessTrackerApplication {
+public class OLD_SmartFitnessTrackerApplication {
 
 	// Global list of users
 	public static userList userList = new userList();
