@@ -1383,8 +1383,61 @@ public class GUI {
 
 
     // Make GUI to show users weight history
+    public static void ViewWeightHistory(User user) {
+
+        JFrame frame = new JFrame("Weight History");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(800, 400);
+        frame.setLocationRelativeTo(null);
+    
+        if (user.getWeightRecords() == null || user.getWeightRecords().length == 0) {
+            JOptionPane.showMessageDialog(frame, 
+                "No weight history available.", 
+                "Information", 
+                JOptionPane.INFORMATION_MESSAGE);
+            frame.dispose();
+            return;
+        }
+    
+        // Create column names
+        String[] columnNames = {"Date/Time", "Weight (kg)", "Notes"};
+    
+        // Create data
+        Object[][] data = new Object[user.getWeightRecords().length][3];
+        for (int i = 0; i < user.getWeightRecords().length; i++) {
+            data[i][0] = user.getWeightRecords()[i].getDateTime().toString();
+            data[i][1] = user.getWeightRecords()[i].getLogedWeight();
+            data[i][2] = user.getWeightRecords()[i].getNotes();
+        }
+    
+        // Create table
+        JTable table = new JTable(data, columnNames);
+        table.setFillsViewportHeight(true);
+        JScrollPane scrollPane = new JScrollPane(table);
+    
+        // Add components
+        frame.add(scrollPane, BorderLayout.CENTER);
+    
+        // Add chart panel
+        JPanel chartPanel = new JPanel();
+        // Here you could add a chart visualization if desired
+        chartPanel.add(new JLabel("Weight Trend Chart would appear here"));
+        frame.add(chartPanel, BorderLayout.NORTH);
+    
+        // Close button
+        JButton closeButton = new JButton("Close");
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(closeButton);
+        frame.add(buttonPanel, BorderLayout.SOUTH);
+    
+        closeButton.addActionListener(e -> frame.dispose());
+    
+        frame.setVisible(true);
+    
+    
 
     // Make GUI to show users progress reports
+    
     public static void ViewProgressReport(User user) {
         JFrame frame = new JFrame("Progress Report - " + user.getUsername());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
