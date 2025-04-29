@@ -12,13 +12,6 @@ public class GUI {
     public static User NewUserCreationScreen() {
         JFrame frame = new JFrame("New User Creation");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        // URL iconURL = NewUserCreationScreen.class.getResource("/logo.png");
-        // if (iconURL != null) {
-        //     Image icon = Toolkit.getDefaultToolkit().getImage(iconURL);
-        //     frame.setIconImage(icon);
-        // } else {
-        //     System.err.println("Icon not found");
-        // }
         frame.setSize(600, 400);
         frame.setLayout(new GridBagLayout());
         frame.setLocationRelativeTo(null);
