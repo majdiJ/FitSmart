@@ -766,12 +766,215 @@ public class GUI {
         frame.setVisible(true);
     }
 
-
     // Make GUI for user to log their workout
+    public static Workout LogWorkout() {
+        JFrame frame = new JFrame("Log Workout");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(500, 500);
+        frame.setLayout(new GridBagLayout());
+        frame.setLocationRelativeTo(null);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Workout type
+        JLabel typeLabel = new JLabel("Workout Type:");
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        frame.add(typeLabel, gbc);
+
+        JComboBox<String> typeComboBox = new JComboBox<>(Workout.WORKOUT_TYPES);
+        gbc.gridx = 1;
+        frame.add(typeComboBox, gbc);
+
+        // Duration
+        JLabel durationLabel = new JLabel("Duration (minutes):");
+        gbc.gridx = 0;
+        gbc.gridy++;
+        frame.add(durationLabel, gbc);
+
+        JTextField durationField = new JTextField(10);
+        gbc.gridx = 1;
+        frame.add(durationField, gbc);
+
+        // Calories burned
+        JLabel caloriesLabel = new JLabel("Calories Burned:");
+        gbc.gridx = 0;
+        gbc.gridy++;
+        frame.add(caloriesLabel, gbc);
+
+        JTextField caloriesField = new JTextField(10);
+        gbc.gridx = 1;
+        frame.add(caloriesField, gbc);
+
+        // Steps
+        JLabel stepsLabel = new JLabel("Steps Taken:");
+        gbc.gridx = 0;
+        gbc.gridy++;
+        frame.add(stepsLabel, gbc);
+
+        JTextField stepsField = new JTextField(10);
+        gbc.gridx = 1;
+        frame.add(stepsField, gbc);
+
+        // Notes
+        JLabel notesLabel = new JLabel("Notes:");
+        gbc.gridx = 0;
+        gbc.gridy++;
+        frame.add(notesLabel, gbc);
+
+        JTextArea notesArea = new JTextArea(3, 20);
+        JScrollPane notesScroll = new JScrollPane(notesArea);
+        gbc.gridx = 1;
+        frame.add(notesScroll, gbc);
+
+        // Date/time
+        JLabel dateLabel = new JLabel("Date/Time:");
+        gbc.gridx = 0;
+        gbc.gridy++;
+        frame.add(dateLabel, gbc);
+
+        JTextField dateField = new JTextField(LocalDateTime.now().toString());
+        gbc.gridx = 1;
+        frame.add(dateField, gbc);
+
+        // Buttons
+        JButton submitButton = new JButton("Submit");
+        gbc.gridx = 0;
+        gbc.gridy++;
+        frame.add(submitButton, gbc);
+
+        JButton cancelButton = new JButton("Cancel");
+        gbc.gridx = 1;
+        frame.add(cancelButton, gbc);
+
+        final Workout[] workoutResult = {null};
+
+        submitButton.addActionListener(e -> {
+            try {
+                String type = (String) typeComboBox.getSelectedItem();
+                int duration = Integer.parseInt(durationField.getText());
+                int calories = Integer.parseInt(caloriesField.getText());
+                int steps = Integer.parseInt(stepsField.getText());
+                String notes = notesArea.getText();
+                LocalDateTime dateTime = LocalDateTime.parse(dateField.getText());
+
+                workoutResult[0] = new Workout(type, duration, calories, steps, dateTime, notes);
+                JOptionPane.showMessageDialog(frame, "Workout logged successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                frame.dispose();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(frame, "Please enter valid numbers for duration, calories, and steps.", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frame, "Invalid date/time format. Please use the format shown.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        cancelButton.addActionListener(e -> frame.dispose());
+
+        frame.setVisible(true);
+
+        // Wait until frame is closed
+        while (workoutResult[0] == null && frame.isDisplayable()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return workoutResult[0];
+    }
 
     // Make GUI for user to log their water intake
 
+
     // Make GUI for user to log their sleep
+    public static Sleep LogSleep() {
+        JFrame frame = new JFrame("Log Sleep");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.setLayout(new GridBagLayout());
+        frame.setLocationRelativeTo(null);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Duration
+        JLabel durationLabel = new JLabel("Duration (minutes):");
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        frame.add(durationLabel, gbc);
+
+        JTextField durationField = new JTextField(10);
+        gbc.gridx = 1;
+        frame.add(durationField, gbc);
+
+        // Notes
+        JLabel notesLabel = new JLabel("Notes:");
+        gbc.gridx = 0;
+        gbc.gridy++;
+        frame.add(notesLabel, gbc);
+
+        JTextArea notesArea = new JTextArea(3, 20);
+        JScrollPane notesScroll = new JScrollPane(notesArea);
+        gbc.gridx = 1;
+        frame.add(notesScroll, gbc);
+
+        // Date/time
+        JLabel dateLabel = new JLabel("Date/Time:");
+        gbc.gridx = 0;
+        gbc.gridy++;
+        frame.add(dateLabel, gbc);
+
+        JTextField dateField = new JTextField(LocalDateTime.now().toString());
+        gbc.gridx = 1;
+        frame.add(dateField, gbc);
+
+        // Buttons
+        JButton submitButton = new JButton("Submit");
+        gbc.gridx = 0;
+        gbc.gridy++;
+        frame.add(submitButton, gbc);
+
+        JButton cancelButton = new JButton("Cancel");
+        gbc.gridx = 1;
+        frame.add(cancelButton, gbc);
+
+        final Sleep[] sleepResult = {null};
+
+        submitButton.addActionListener(e -> {
+            try {
+                int duration = Integer.parseInt(durationField.getText());
+                String notes = notesArea.getText();
+                LocalDateTime dateTime = LocalDateTime.parse(dateField.getText());
+
+                sleepResult[0] = new Sleep(duration, dateTime, notes);
+                JOptionPane.showMessageDialog(frame, "Sleep logged successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                frame.dispose();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(frame, "Please enter a valid number for duration.", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frame, "Invalid date/time format. Please use the format shown.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        cancelButton.addActionListener(e -> frame.dispose());
+
+        frame.setVisible(true);
+
+        // Wait until frame is closed
+        while (sleepResult[0] == null && frame.isDisplayable()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return sleepResult[0];
+    }
 
     // Make GUI for user to log their weight
 
