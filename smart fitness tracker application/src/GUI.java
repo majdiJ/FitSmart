@@ -76,7 +76,7 @@ public class GUI {
             // Validation
             if (Validation.isUsernameEmpty(username)) {
                 JOptionPane.showMessageDialog(frame, "Username cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
-            } else if (!Validation.isUsernameUnique(username, SmartFitnessTrackerApplication.existingUsernames)) {
+            } else if (!Validation.isUsernameUnique(username, OLD_SmartFitnessTrackerApplication.existingUsernames)) {
                 JOptionPane.showMessageDialog(frame, "Username already exists. Please choose a different username.", "Error", JOptionPane.ERROR_MESSAGE);
             } else if (Validation.doesUsernameContainSpecialChars(username)) {
                 JOptionPane.showMessageDialog(frame, "Username cannot contain special characters.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -447,28 +447,28 @@ public class GUI {
         submitButton.addActionListener(e -> {
             try {
                 int dailyStepCountGoal = stepGoalCheck.isSelected() ?
-                    validateAndParseInteger(stepGoalField.getText(), 0, 100000, "Daily Step Count") : 0;
+                    Validation.validateAndParseInteger(stepGoalField.getText(), 0, 100000, "Daily Step Count") : 0;
     
                 int workoutDurationGoal = workoutDurationCheck.isSelected() ?
-                    validateAndParseInteger(workoutDurationField.getText(), 0, 10080, "Workout Duration") : 0;
+                    Validation.validateAndParseInteger(workoutDurationField.getText(), 0, 10080, "Workout Duration") : 0;
     
                 int caloriesBurnedGoal = caloriesBurnedCheck.isSelected() ?
-                    validateAndParseInteger(caloriesBurnedField.getText(), 0, 1000000, "Calories Burned") : 0;
+                    Validation.validateAndParseInteger(caloriesBurnedField.getText(), 0, 1000000, "Calories Burned") : 0;
     
                 int workoutsPerWeekGoal = workoutsPerWeekCheck.isSelected() ?
-                    validateAndParseInteger(workoutsPerWeekField.getText(), 0, 100, "Workouts Per Week") : 0;
+                    Validation.validateAndParseInteger(workoutsPerWeekField.getText(), 0, 100, "Workouts Per Week") : 0;
     
                 double dailyWaterIntakeGoal = waterIntakeCheck.isSelected() ?
-                    validateAndParseDouble(waterIntakeField.getText(), 0.0, 50.0, "Water Intake") : 0.0;
+                    Validation.validateAndParseDouble(waterIntakeField.getText(), 0.0, 50.0, "Water Intake") : 0.0;
     
                 int sleepMinutesGoal = sleepMinutesCheck.isSelected() ?
-                    validateAndParseInteger(sleepMinutesField.getText(), 0, 1440, "Sleep Minutes") : 0;
+                    Validation.validateAndParseInteger(sleepMinutesField.getText(), 0, 1440, "Sleep Minutes") : 0;
     
                 double weightGoal = weightGoalCheck.isSelected() ?
-                    validateAndParseDouble(weightGoalField.getText(), 0.0, 200.0, "Weight Goal") : 0.0;
+                    Validation.validateAndParseDouble(weightGoalField.getText(), 0.0, 200.0, "Weight Goal") : 0.0;
     
                 double strengthGoal = strengthGoalCheck.isSelected() ?
-                    validateAndParseDouble(strengthGoalField.getText(), 0.0, 1000.0, "Strength Goal") : 0.0;
+                    Validation.validateAndParseDouble(strengthGoalField.getText(), 0.0, 1000.0, "Strength Goal") : 0.0;
     
                 boolean isGoalSet = stepGoalCheck.isSelected() || workoutDurationCheck.isSelected() ||
                                     caloriesBurnedCheck.isSelected() || workoutsPerWeekCheck.isSelected() ||
@@ -508,37 +508,5 @@ public class GUI {
         return fitnessGoalResult[0];
     }
     
-    // Validation helper methods
-    private static int validateAndParseInteger(String input, int min, int max, String fieldName) {
-        if (input == null || input.trim().isEmpty()) {
-            throw new IllegalArgumentException(fieldName + " cannot be empty.");
-        }
-        int value;
-        try {
-            value = Integer.parseInt(input.trim());
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(fieldName + " must be a valid integer.");
-        }
-        if (value < min || value > max) {
-            throw new IllegalArgumentException(fieldName + " must be between " + min + " and " + max + ".");
-        }
-        return value;
-    }
-    
-    private static double validateAndParseDouble(String input, double min, double max, String fieldName) {
-        if (input == null || input.trim().isEmpty()) {
-            throw new IllegalArgumentException(fieldName + " cannot be empty.");
-        }
-        double value;
-        try {
-            value = Double.parseDouble(input.trim());
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(fieldName + " must be a valid number.");
-        }
-        if (value < min || value > max) {
-            throw new IllegalArgumentException(fieldName + " must be between " + min + " and " + max + ".");
-        }
-        return value;
-    }
         
 }

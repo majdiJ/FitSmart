@@ -2,6 +2,7 @@
 // // This class will validate user input and ensure that the data entered is correct and within acceptable ranges.
 
 // Impor Libraries
+import java.security.PublicKey;
 import java.time.LocalDateTime;
 
 public class Validation {
@@ -34,6 +35,40 @@ public class Validation {
         } catch (NumberFormatException e) {
             return false; // Input is not a valid double
         }
+    }
+
+    // Gender Validation
+    public static int validateAndParseInteger(String input, int min, int max, String fieldName) {
+        if (input == null || input.trim().isEmpty()) {
+            throw new IllegalArgumentException(fieldName + " cannot be empty.");
+        }
+        int value;
+        try {
+            value = Integer.parseInt(input.trim());
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(fieldName + " must be a valid integer.");
+        }
+        if (value < min || value > max) {
+            throw new IllegalArgumentException(fieldName + " must be between " + min + " and " + max + ".");
+        }
+        return value;
+    }
+
+    // Gender Validation
+    public static double validateAndParseDouble(String input, double min, double max, String fieldName) {
+        if (input == null || input.trim().isEmpty()) {
+            throw new IllegalArgumentException(fieldName + " cannot be empty.");
+        }
+        double value;
+        try {
+            value = Double.parseDouble(input.trim());
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(fieldName + " must be a valid number.");
+        }
+        if (value < min || value > max) {
+            throw new IllegalArgumentException(fieldName + " must be between " + min + " and " + max + ".");
+        }
+        return value;
     }
 
     // Username Validation
