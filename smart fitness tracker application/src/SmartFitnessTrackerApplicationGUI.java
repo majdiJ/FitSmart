@@ -191,7 +191,7 @@ public class SmartFitnessTrackerApplicationGUI {
 
 							case 2: // Set fitness goals
 								TempConsoleUI.ClearConsole();
-								fitnessGoal = TempConsoleUI.SetFitnessGoals();
+								fitnessGoal = GUI.SetFitnessGoals();
 								if (fitnessGoal != null) {
 									selectedUser.setFitnessGoal(fitnessGoal);
 									System.out.println("Fitness goals set successfully.");

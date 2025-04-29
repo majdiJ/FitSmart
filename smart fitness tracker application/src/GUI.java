@@ -86,7 +86,6 @@ public class GUI {
         return result[0];
     }
     
-
     // New user creation screen
     public static User NewUserCreationScreen() {
         JFrame frame = new JFrame("New User Creation");
