@@ -63,9 +63,30 @@ public class SmartFitnessTrackerApplicationGUI {
 	// Call the console UI
 	public static void main(String[] args) {
 
+		// User accepted terms and conditions
+		Boolean UserAcceptedTerms = false;
+
 		while (true) {
 			// Clear the console
 			TempConsoleUI.ClearConsole();
+
+			while (UserAcceptedTerms == false) {
+				if (!UserAcceptedTerms) {
+					UserAcceptedTerms = GUI.WelcomeSplashScreen();
+				} else {
+					// User accepted the terms and conditions
+					System.out.println("Terms and conditions accepted. Proceeding with the application.");
+				}
+	
+				if (!UserAcceptedTerms) {
+					// User did not accept the terms and conditions
+					System.out.println("You must accept the terms and conditions to use this application.");
+					System.exit(0);
+				} else {
+					// User accepted the terms and conditions
+					System.out.println("Terms and conditions accepted. Proceeding with the application.");
+				}
+			}
 
 			// Check if the data file exists
 			String filename = "userData.dat";

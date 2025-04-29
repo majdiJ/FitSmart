@@ -4,10 +4,88 @@
 
 import java.awt.*;
 import java.time.LocalDateTime;
+import java.net.URL;
 import javax.swing.*;
 
 public class GUI {
 
+    // Splash screen for first launch
+    public static boolean WelcomeSplashScreen() {
+        JFrame frame = new JFrame("Welcome to FitSmart");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(900, 700);
+        frame.setLayout(new BorderLayout());
+        frame.setLocationRelativeTo(null);
+    
+        // Load logo
+        URL iconURL = GUI.class.getResource("/Images/logo.png");
+        JLabel logoLabel = new JLabel();
+        if (iconURL != null) {
+            ImageIcon logoIcon = new ImageIcon(iconURL);
+            Image scaledImage = logoIcon.getImage().getScaledInstance(400, 400, Image.SCALE_SMOOTH);
+            logoLabel.setIcon(new ImageIcon(scaledImage));
+        } else {
+            logoLabel.setText("Logo not found");
+            logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        }
+    
+        // Left panel for welcome text
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new GridBagLayout());
+        leftPanel.setBackground(Color.WHITE);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(20, 20, 20, 20);
+        gbc.gridx = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+    
+        JLabel welcomeLabel = new JLabel("Welcome to FitSmart!");
+        welcomeLabel.setFont(new Font("SansSerif", Font.BOLD, 32));
+        gbc.gridy = 0;
+        leftPanel.add(welcomeLabel, gbc);
+    
+        JLabel descLabel = new JLabel("<html><p>Track your workouts, monitor your health, and crush your fitness goals with FitSmart.</p></html>");
+        descLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        gbc.gridy = 1;
+        leftPanel.add(descLabel, gbc);
+    
+        JButton startButton = new JButton("Let's get started!");
+        startButton.setFont(new Font("SansSerif", Font.BOLD, 18));
+        startButton.setBackground(new Color(0, 255, 127)); // Spring Green
+        startButton.setFocusPainted(false);
+        gbc.gridy = 2;
+        leftPanel.add(startButton, gbc);
+    
+        final boolean[] result = {false};
+    
+        startButton.addActionListener(e -> {
+            result[0] = true;
+            frame.dispose();
+        });
+    
+        // Right panel with logo
+        JPanel rightPanel = new JPanel(new BorderLayout());
+        rightPanel.setBackground(Color.WHITE);
+        rightPanel.add(logoLabel, BorderLayout.CENTER);
+    
+        frame.add(leftPanel, BorderLayout.CENTER);
+        frame.add(rightPanel, BorderLayout.EAST);
+    
+        frame.setVisible(true);
+    
+        // Wait for the frame to close
+        while (frame.isDisplayable()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+    
+        return result[0];
+    }
+    
+
+    // New user creation screen
     public static User NewUserCreationScreen() {
         JFrame frame = new JFrame("New User Creation");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -133,6 +211,7 @@ public class GUI {
         return user[0];
     }
 
+    // User selection menu
     public static int UserSelectionMenu(userList userList) {
         JFrame frame = new JFrame("User Selection");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -206,6 +285,7 @@ public class GUI {
         return choice[0];
     }
    
+    // User PIN login screen
     public static String UserPinLogin(String username) {
         JFrame frame = new JFrame("User PIN Login");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -277,6 +357,7 @@ public class GUI {
         return userPin[0];
     }
 
+    // User PIN validation screen
     public static boolean UserPinValidationScreen(User selectedUser) {
         JFrame frame = new JFrame("User PIN Validation");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -363,6 +444,7 @@ public class GUI {
         return pinValidated[0];
     }
     
+    // Set fitness goals screen
     public static FitnessGoal SetFitnessGoals() {
         JFrame frame = new JFrame("Set Fitness Goals");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
