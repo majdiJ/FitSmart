@@ -1182,14 +1182,95 @@ public class GUI {
         frame.setVisible(true);
     }
 
-
     // Make GUI to show users water intake history
+
 
     // Make GUI to show users sleep history
 
     // Make GUI to show users weight history
 
     // Make GUI to show users progress reports
+    public static void ViewProgressReport(User user) {
+        JFrame frame = new JFrame("Progress Report - " + user.getUsername());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(1000, 700);
+        frame.setLayout(new BorderLayout());
+        frame.setLocationRelativeTo(null);
+
+        // Create tabbed pane for different report sections
+        JTabbedPane tabbedPane = new JTabbedPane();
+
+        // Summary tab
+        JPanel summaryPanel = new JPanel(new BorderLayout());
+        JTextArea summaryText = new JTextArea();
+        summaryText.setEditable(false);
+        summaryText.append("=== USER PROFILE ===\n");
+        summaryText.append("Name: " + user.getName() + "\n");
+        summaryText.append("Weight: " + user.getWeight() + " kg\n\n");
+        
+        summaryText.append("=== FITNESS GOALS ===\n");
+        FitnessGoal goals = user.getFitnessGoal();
+        if (goals != null) {
+            summaryText.append("Daily Steps: " + goals.getDailyStepCount() + "\n");
+            summaryText.append("Workout Duration: " + goals.getWorkoutDuration() + " min\n");
+            summaryText.append("Calories Burned: " + goals.getCaloriesBurned() + "\n");
+            summaryText.append("Workouts Per Week: " + goals.getWorkoutsPerWeek() + "\n");
+            summaryText.append("Water Intake: " + goals.getDailyWaterIntake() + " liters\n");
+            summaryText.append("Sleep: " + goals.getsleepMinutes() + " min\n");
+            summaryText.append("Weight Goal: " + goals.getWeightGoal() + " kg\n");
+            summaryText.append("Strength Goal: " + goals.getStrength() + " kg\n");
+        }
+        summaryPanel.add(new JScrollPane(summaryText), BorderLayout.CENTER);
+        tabbedPane.addTab("Summary", summaryPanel);
+
+        // Progress tab
+        JPanel progressPanel = new JPanel(new BorderLayout());
+        JTextArea progressText = new JTextArea();
+        progressText.setEditable(false);
+        
+        ProgressTracker tracker = new ProgressTracker();
+        LocalDateTime now = LocalDateTime.now();
+        
+        // Steps progress
+        progressText.append("=== STEPS ===\n");
+        progressText.append("Today: " + tracker.getStepsTakenInRange(user.getWorkouts(), now.minusDays(1), now) + "\n");
+        progressText.append("This Week: " + tracker.getStepsTakenInRange(user.getWorkouts(), now.minusDays(7), now) + "\n");
+        progressText.append("This Month: " + tracker.getStepsTakenInRange(user.getWorkouts(), now.minusDays(30), now) + "\n");
+        progressText.append("Average Daily: " + tracker.getAverageStepsTakenInRange(user.getWorkouts(), now.minusDays(30), now) + "\n\n");
+        
+        // Workouts progress
+        progressText.append("=== WORKOUTS ===\n");
+        progressText.append("This Week: " + tracker.getTotalWorkoutsInRange(user.getWorkouts(), now.minusDays(7), now) + "\n");
+        progressText.append("This Month: " + tracker.getTotalWorkoutsInRange(user.getWorkouts(), now.minusDays(30), now) + "\n");
+        progressText.append("Average Weekly: " + tracker.getAverageWorkoutsInRange(user.getWorkouts(), now.minusDays(30), now) + "\n\n");
+        
+        // Weight progress
+        if (user.getWeightRecords() != null && user.getWeightRecords().length > 0) {
+            progressText.append("=== WEIGHT ===\n");
+            progressText.append("Current: " + user.getWeightRecords()[user.getWeightRecords().length-1].getLogedWeight() + " kg\n");
+            progressText.append("Change (30 days): " + tracker.getWeightChangeInRange(user.getWeightRecords(), now.minusDays(30), now) + " kg\n\n");
+        }
+        
+        progressPanel.add(new JScrollPane(progressText), BorderLayout.CENTER);
+        tabbedPane.addTab("Progress", progressPanel);
+
+        // Charts tab (placeholder)
+        JPanel chartsPanel = new JPanel();
+        chartsPanel.add(new JLabel("Charts and graphs would be displayed here"));
+        tabbedPane.addTab("Charts", chartsPanel);
+
+        frame.add(tabbedPane, BorderLayout.CENTER);
+
+        // Close button
+        JButton closeButton = new JButton("Close");
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(closeButton);
+        frame.add(buttonPanel, BorderLayout.SOUTH);
+
+        closeButton.addActionListener(e -> frame.dispose());
+
+        frame.setVisible(true);
+    }
 
     // test message example
     // test message jess
