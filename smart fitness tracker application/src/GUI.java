@@ -1,3 +1,7 @@
+// GUI Class
+// This class is resposible for creating the GUI for the Smart Fitness Tracker Application.
+// It includes methods for: creating the user creation screen, user selection menu, user PIN login, and setting fitness goals.
+
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDateTime;
@@ -181,11 +185,10 @@ public class GUI {
         selectUserButton.addActionListener(e -> {
             int selectedIndex = userJList.getSelectedIndex();
             if (selectedIndex != -1) {
-                choice[0] = selectedIndex + 2; // +2 because 0 = Exit, 1 = Create New User
-                JOptionPane.showMessageDialog(frame, "User '" + userList.getUsers()[selectedIndex].getUsername() + "' selected successfully!", "User Selected", JOptionPane.INFORMATION_MESSAGE);
-                frame.dispose();
+            choice[0] = selectedIndex + 2; // +2 because 0 = Exit, 1 = Create New User
+            frame.dispose();
             } else {
-                JOptionPane.showMessageDialog(frame, "Please select a user from the list.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Please select a user from the list.", "No Selection", JOptionPane.WARNING_MESSAGE);
             }
         });
     
@@ -508,5 +511,28 @@ public class GUI {
         return fitnessGoalResult[0];
     }
     
-        
+    // Make GUI for user dashboard
+
+    // Make GUI to show users profile
+
+    // Make GUI for user to log their workout
+
+    // Make GUI for user to log their water intake
+
+    // Make GUI for user to log their sleep
+
+    // Make GUI for user to log their weight
+
+    // Make GUI to show users fitness goals
+
+    // Make GUI to show users workout history
+
+    // Make GUI to show users water intake history
+
+    // Make GUI to show users sleep history
+
+    // Make GUI to show users weight history
+
+    // Make GUI to show users progress reports
+
 }
