@@ -535,4 +535,6 @@ public class GUI {
 
     // Make GUI to show users progress reports
 
+    // test message example
+
 }
