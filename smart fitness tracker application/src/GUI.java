@@ -2,10 +2,9 @@
 // This class is resposible for creating the GUI for the Smart Fitness Tracker Application.
 // It includes methods for: creating the user creation screen, user selection menu, user PIN login, and setting fitness goals.
 
-import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDateTime;
-import java.net.URL;
+import javax.swing.*;
 
 public class GUI {
 
@@ -544,5 +543,7 @@ public class GUI {
     // Make GUI to show users progress reports
 
     // test message example
+    // test message jess
+    // blah blah
 
 }
