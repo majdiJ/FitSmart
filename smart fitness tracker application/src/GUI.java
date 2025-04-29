@@ -887,7 +887,114 @@ public class GUI {
     }
 
     // Make GUI for user to log their water intake
-
+    public static Water LogWaterIntakeGUI() {
+        JFrame frame = new JFrame("Log Water Intake");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setLayout(new GridBagLayout());
+        frame.setLocationRelativeTo(null);
+    
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+    
+        JLabel amountLabel = new JLabel("Amount of water (liters):");
+        JTextField amountField = new JTextField(20);
+    
+        JLabel useCurrentLabel = new JLabel("Use current date/time?");
+        JCheckBox useCurrentCheckbox = new JCheckBox("Yes", true);
+    
+        JLabel customDateTimeLabel = new JLabel("Custom date/time (YYYY-MM-DD HH:MM):");
+        JTextField customDateTimeField = new JTextField(20);
+        customDateTimeField.setEnabled(false); // Disabled by default
+    
+        JLabel notesLabel = new JLabel("Notes:");
+        JTextField notesField = new JTextField(20);
+    
+        JButton submitButton = new JButton("Submit");
+        final Water[] loggedWater = {null};
+    
+        // Toggle custom datetime field based on checkbox
+        useCurrentCheckbox.addActionListener(e -> {
+            customDateTimeField.setEnabled(!useCurrentCheckbox.isSelected());
+        });
+    
+        gbc.gridx = 0; gbc.gridy = 0;
+        frame.add(amountLabel, gbc);
+        gbc.gridx = 1;
+        frame.add(amountField, gbc);
+    
+        gbc.gridx = 0; gbc.gridy = 1;
+        frame.add(useCurrentLabel, gbc);
+        gbc.gridx = 1;
+        frame.add(useCurrentCheckbox, gbc);
+    
+        gbc.gridx = 0; gbc.gridy = 2;
+        frame.add(customDateTimeLabel, gbc);
+        gbc.gridx = 1;
+        frame.add(customDateTimeField, gbc);
+    
+        gbc.gridx = 0; gbc.gridy = 3;
+        frame.add(notesLabel, gbc);
+        gbc.gridx = 1;
+        frame.add(notesField, gbc);
+    
+        gbc.gridx = 0; gbc.gridy = 4; gbc.gridwidth = 2;
+        frame.add(submitButton, gbc);
+    
+        submitButton.addActionListener(e -> {
+            try {
+                // Water amount validation
+                double amount = Double.parseDouble(amountField.getText().trim());
+                if (amount <= 0) {
+                    JOptionPane.showMessageDialog(frame, "Water intake must be a positive number.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+    
+                // Notes validation
+                String notes = notesField.getText().trim();
+                if (notes.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Notes cannot be empty.", "Missing Notes", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+    
+                // Date/time handling
+                LocalDateTime dateTime;
+                if (useCurrentCheckbox.isSelected()) {
+                    dateTime = LocalDateTime.now();
+                    JOptionPane.showMessageDialog(frame, "Using current date and time: " + dateTime.toString(), "Info", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    String customDateTimeStr = customDateTimeField.getText().trim();
+                    if (!Validation.canConvertStringToLocalDateTime(customDateTimeStr)) {
+                        JOptionPane.showMessageDialog(frame, "Invalid date format. Please use YYYY-MM-DD HH:MM.", "Invalid Date", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    dateTime = Validation.convertStringToLocalDateTime(customDateTimeStr);
+                    JOptionPane.showMessageDialog(frame, "Custom date and time set to: " + dateTime.toString(), "Date Set", JOptionPane.INFORMATION_MESSAGE);
+                }
+    
+                // All valid → create Water object
+                loggedWater[0] = new Water(amount, dateTime, notes);
+                JOptionPane.showMessageDialog(frame, "Water intake logged successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                frame.dispose();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(frame, "Amount must be a valid number.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    
+        frame.setVisible(true);
+    
+        // Wait for the user to submit
+        while (loggedWater[0] == null && frame.isDisplayable()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+    
+        return loggedWater[0];
+    }
 
     // Make GUI for user to log their sleep
     public static Sleep LogSleep() {
