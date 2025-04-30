@@ -23,8 +23,10 @@ FitSmart is a smart fitness tracker application that allows users to track their
     - And more!
 
 # Requirements to Run the Application
-- Java Development Kit (JDK) 8 or higher
-- Java Swing for GUI components (Usually included with JDK)
+- java 23.0.2 2025-01-21
+- Java Swing (for GUI, included in Java SE)
+- Java AWT (for GUI, included in Java SE)
+- Java IO (for file handling, included in Java SE)
 
 
 # How to Run the Application
