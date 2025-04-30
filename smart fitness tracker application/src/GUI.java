@@ -610,80 +610,79 @@ public class GUI {
     
         return fitnessGoalResult[0];
     }
+    
     // Make GUI for user dashboard
     public static int UserMainMenu(User user) {
-            JDialog dialog = new JDialog();
-            dialog.setModal(true);
-            dialog.setTitle("FitSmart Dashboard");
-            dialog.setSize(1000, 800);
-            dialog.setLayout(new BorderLayout(10, 10));
-            dialog.setLocationRelativeTo(null);
-    
-            // Declare returnChoice BEFORE creating buttons
-            final int[] returnChoice = {0};
-    
-            // ... rest of the metrics panel code ...
-    
-            // Button panel
-            JPanel buttonPanel = new JPanel(new GridLayout(4, 3, 10, 10));
-            buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-    
-            String[] buttonLabels = {
-                "View Profile", "Set Goals", "View Goals",
-                "Log Workout", "Workout History", "Progress Reports",
-                "Log Water", "Log Sleep", "Log Weight",
-                "View sleep history", "View water history", "View weight history"
-            };
-    
-            int[] choices = {
-                1, 2, 3,
-                4, 5, 6,
-                7, 8, 9,
-                10, 11, 12};
-    
-            for (int i = 0; i < buttonLabels.length; i++) {
-                if (choices[i] == -1) {
-                    buttonPanel.add(new JLabel());
-                    continue;
-                }
-                
-                JButton btn = new JButton("<html><center>" + buttonLabels[i] + "</center></html>");
-                btn.setPreferredSize(new Dimension(200, 80));
-                final int choice = choices[i];
-                
-                btn.addActionListener(e -> {
-                    dialog.dispose();
-                    returnChoice[0] = choice;
-                });
-                
-                buttonPanel.add(btn);
+        JDialog dialog = new JDialog();
+        dialog.setModal(true);
+        dialog.setTitle("FitSmart Dashboard");
+        dialog.setSize(1000, 800);
+        dialog.setLayout(new BorderLayout(10, 10));
+        dialog.setLocationRelativeTo(null);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        // Declare returnChoice BEFORE creating buttons
+        final int[] returnChoice = {0};
+
+        // Button panel
+        JPanel buttonPanel = new JPanel(new GridLayout(4, 3, 10, 10));
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        String[] buttonLabels = {
+            "View Profile", "Set Goals", "View Goals",
+            "Log Workout", "Workout History", "Progress Reports",
+            "Log Water", "Log Sleep", "Log Weight",
+            "View sleep history", "View water history", "View weight history"
+        };
+
+        int[] choices = {
+            1, 2, 3,
+            4, 5, 6,
+            7, 8, 9,
+            10, 11, 12
+        };
+
+        for (int i = 0; i < buttonLabels.length; i++) {
+            if (choices[i] == -1) {
+                buttonPanel.add(new JLabel());
+                continue;
             }
-    
-            dialog.add(new JScrollPane(buttonPanel), BorderLayout.CENTER);
-    
-            // Window listener
-            dialog.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    returnChoice[0] = 12; // Exit if window closed
-                    dialog.dispose();
-                }
+
+            JButton btn = new JButton("<html><center>" + buttonLabels[i] + "</center></html>");
+            btn.setPreferredSize(new Dimension(200, 80));
+            final int choice = choices[i];
+
+            btn.addActionListener(e -> {
+                dialog.dispose();
+                returnChoice[0] = choice;
             });
-    
-            dialog.setVisible(true);
-            
-            // Wait for dialog to close
-            while (dialog.isVisible()) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            
-            return returnChoice[0];
+
+            buttonPanel.add(btn);
         }
 
+        dialog.add(new JScrollPane(buttonPanel), BorderLayout.CENTER);
+
+        // Window listener to exit application when the window is closed
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0); // Exit the application
+            }
+        });
+
+        dialog.setVisible(true);
+
+        // Wait for dialog to close
+        while (dialog.isVisible()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return returnChoice[0];
+    }
     // Make GUI to show users profile
     public static boolean ViewUserProfile(User user) {
         JFrame frame = new JFrame("User Profile - " + user.getUsername());
