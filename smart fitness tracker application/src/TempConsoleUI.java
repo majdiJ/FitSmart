@@ -62,7 +62,7 @@ public class TempConsoleUI {
             // Check if username is valid
             if (Validation.isUsernameEmpty(username)) {
                 ErrorMessage("Username cannot be empty.");
-            } else if (!Validation.isUsernameUnique(username, OLD_SmartFitnessTrackerApplication.existingUsernames)) {
+            } else if (!Validation.isUsernameUnique(username, SmartFitnessTrackerApplicationGUI.existingUsernames)) {
                 ErrorMessage("Username already exists. Please choose a different username.");
             } else if (Validation.doesUsernameContainSpecialChars(username)) {
                 ErrorMessage("Username cannot contain special characters.");
